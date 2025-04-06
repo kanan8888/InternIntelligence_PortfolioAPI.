@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Project {
+public class ProjectEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
-    Portfolio portfolio;
+    PortfolioEntity portfolio;
 
     @PrePersist
     protected void onCreate() {

@@ -2,5 +2,5 @@ package az.portfolioapi.entity.enums;
 
 public enum UserRole {
     ADMIN,
-    USER
+    MEMBER
 }

@@ -2,7 +2,7 @@ package az.portfolioapi.service.education;
 
 import az.portfolioapi.dto.request.EducationRequestDTO;
 import az.portfolioapi.dto.response.EducationResponseDTO;
-import az.portfolioapi.entity.Education;
+import az.portfolioapi.entity.EducationEntity;
 import az.portfolioapi.exception.EducationNotFoundException;
 import az.portfolioapi.repository.EducationRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public void deleteEducation(Long id) {
-        Education education = educationRepository.findById(id)
+        EducationEntity education = educationRepository.findById(id)
                 .orElseThrow(()-> new EducationNotFoundException("No education found with id: " + id));
         educationRepository.delete(education);
     }

@@ -2,7 +2,7 @@ package az.portfolioapi.service.portfolio;
 
 import az.portfolioapi.dto.request.PortfolioRequestDTO;
 import az.portfolioapi.dto.response.PortfolioResponseDTO;
-import az.portfolioapi.entity.Portfolio;
+import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.exception.PortfolioNotFoundException;
 import az.portfolioapi.repository.PortfolioRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,8 +43,8 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     @Override
     public void deletePortfolio(Long id) {
-        Portfolio portfolio = portfolioRepository.findById(id)
+        PortfolioEntity portfolioEntity = portfolioRepository.findById(id)
                 .orElseThrow(()-> new PortfolioNotFoundException("Portfolio not found with id: " + id));
-        portfolioRepository.delete(portfolio);
+        portfolioRepository.delete(portfolioEntity);
     }
 }

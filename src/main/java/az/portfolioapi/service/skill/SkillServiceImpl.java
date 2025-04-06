@@ -2,7 +2,7 @@ package az.portfolioapi.service.skill;
 
 import az.portfolioapi.dto.request.SkillRequestDTO;
 import az.portfolioapi.dto.response.SkillResponseDTO;
-import az.portfolioapi.entity.Skill;
+import az.portfolioapi.entity.SkillEntity;
 import az.portfolioapi.exception.SkillNotFoundException;
 import az.portfolioapi.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillResponseDTO getSkillById(Long id) {
         return skillRepository.findById(id)
-                .map(skill -> modelMapper.map(skill, SkillResponseDTO.class))
+                .map(skillEntity -> modelMapper.map(skillEntity, SkillResponseDTO.class))
                 .orElseThrow(()-> new SkillNotFoundException("skill not found with id " + id));
     }
 
@@ -44,14 +44,14 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public List<SkillResponseDTO> getAllSkills() {
         return skillRepository.findAll().stream()
-                .map(skill -> modelMapper.map(skill, SkillResponseDTO.class))
+                .map(skillEntity -> modelMapper.map(skillEntity, SkillResponseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
     public void deleteSkill(Long id) {
-        Skill skill = skillRepository.findById(id)
+        SkillEntity skillEntity = skillRepository.findById(id)
                 .orElseThrow(()-> new SkillNotFoundException("skill not found with id " + id));
-        skillRepository.delete(skill);
+        skillRepository.delete(skillEntity);
     }
 }

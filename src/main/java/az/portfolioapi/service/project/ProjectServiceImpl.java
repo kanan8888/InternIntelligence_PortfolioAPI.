@@ -2,13 +2,12 @@ package az.portfolioapi.service.project;
 
 import az.portfolioapi.dto.request.ProjectRequestDTO;
 import az.portfolioapi.dto.response.ProjectResponseDTO;
-import az.portfolioapi.entity.Project;
+import az.portfolioapi.entity.ProjectEntity;
 import az.portfolioapi.exception.ProjectNotFoundException;
 import az.portfolioapi.exception.SkillNotFoundException;
 import az.portfolioapi.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteProject(Long id) {
-        Project project = projectRepository.findById(id)
+        ProjectEntity project = projectRepository.findById(id)
                 .orElseThrow(() -> new ProjectNotFoundException("project not found with id " + id));
         projectRepository.delete(project);
     }

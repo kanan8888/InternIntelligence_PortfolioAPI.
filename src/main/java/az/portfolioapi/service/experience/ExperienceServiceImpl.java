@@ -2,7 +2,7 @@ package az.portfolioapi.service.experience;
 
 import az.portfolioapi.dto.request.ExperienceRequestDTO;
 import az.portfolioapi.dto.response.ExperienceResponseDTO;
-import az.portfolioapi.entity.Experience;
+import az.portfolioapi.entity.ExperienceEntity;
 import az.portfolioapi.exception.ExperienceNotFoundException;
 import az.portfolioapi.repository.ExperienceRepository;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class ExperienceServiceImpl implements ExperienceService {
 
     @Override
     public void deleteExperience(Long id) {
-        Experience experience = experienceRepository.findById(id)
+        ExperienceEntity experience = experienceRepository.findById(id)
                 .orElseThrow(()->new ExperienceNotFoundException("Experience not found with id: " + id));
         experienceRepository.delete(experience);
     }

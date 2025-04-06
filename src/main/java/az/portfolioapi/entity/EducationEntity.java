@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @NoArgsConstructor
-public class Education {
+public class EducationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,5 +27,5 @@ public class Education {
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
-    private Portfolio portfolio;
+    private PortfolioEntity portfolio;
 }

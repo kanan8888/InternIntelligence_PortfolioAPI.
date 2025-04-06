@@ -10,7 +10,7 @@ import java.util.List;
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Portfolio {
+public class PortfolioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +21,17 @@ public class Portfolio {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    User user;
+    UserEntity user;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Education> educations;
+    List<EducationEntity> educations;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Experience> experiences;
+    List<ExperienceEntity> experiences;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Project> projects;
+    List<ProjectEntity> projects;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<Skill> skills;
+    List<SkillEntity> skills;
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Experience {
+public class ExperienceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +29,5 @@ public class Experience {
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id", nullable = false)
-    Portfolio portfolio;
+    PortfolioEntity portfolio;
 }

@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Skill {
+public class SkillEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +24,5 @@ public class Skill {
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
-    Portfolio portfolio;
+    PortfolioEntity portfolio;
 }
