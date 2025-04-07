@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import java.util.List;
-
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface EducationMapper {
@@ -25,7 +23,11 @@ public interface EducationMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", ignore = true)
     void updateEntity(EducationRequestDTO request, @MappingTarget EducationEntity education);
-
-    @Mapping(target = "portfolioId", source = "portfolio.id")
-    List<EducationResponseDTO> toResponseList(List<EducationEntity> educationList);
 }
+
+
+
+
+
+//@Mapping(target = "portfolioId", source = "portfolio.id")
+//List<EducationResponseDTO> toResponseList(List<EducationEntity> educationList);
