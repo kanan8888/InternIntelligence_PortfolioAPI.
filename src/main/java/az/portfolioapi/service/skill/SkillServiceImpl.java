@@ -1,8 +1,8 @@
 package az.portfolioapi.service.skill;
 
 import az.portfolioapi.configuration.mapper.SkillMapper;
-import az.portfolioapi.dto.request.SkillRequestDTO;
-import az.portfolioapi.dto.response.SkillResponseDTO;
+import az.portfolioapi.dto.request.SkillRequest;
+import az.portfolioapi.dto.response.SkillResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.SkillEntity;
 import az.portfolioapi.exception.PortfolioNotFoundException;
@@ -24,7 +24,7 @@ public class SkillServiceImpl implements SkillService {
     private final SkillMapper skillMapper;
 
     @Override
-    public SkillResponseDTO createSkill(SkillRequestDTO skillRequest) {
+    public SkillResponse createSkill(SkillRequest skillRequest) {
         PortfolioEntity portfolio = portfolioRepository.findById(skillRequest.getPortfolioId())
                 .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found with id: " + skillRequest.getPortfolioId()));
         SkillEntity skill = skillMapper.toEntity(skillRequest, portfolio);
@@ -32,22 +32,22 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public SkillResponseDTO updateSkill(Long id, SkillRequestDTO skillRequestDTO) {
+    public SkillResponse updateSkill(Long id, SkillRequest skillRequest) {
         SkillEntity skill = skillRepository.findById(id)
                 .orElseThrow(()-> new SkillNotFoundException("Skill not found with id " + id));
-        skillMapper.update(skillRequestDTO, skill);
+        skillMapper.update(skillRequest, skill);
         return skillMapper.toResponse(skillRepository.save(skill));
     }
 
     @Override
-    public SkillResponseDTO getSkillById(Long id) {
+    public SkillResponse getSkillById(Long id) {
         return skillRepository.findById(id)
                 .map(skillMapper::toResponse)
                 .orElseThrow(()-> new SkillNotFoundException("skill not found with id " + id));
     }
 
     @Override
-    public List<SkillResponseDTO> getSkillsByPortfolioId(Long portfolioId) {
+    public List<SkillResponse> getSkillsByPortfolioId(Long portfolioId) {
         PortfolioEntity portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found with id " + portfolioId));
         return portfolio.getSkills().stream()
@@ -56,7 +56,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<SkillResponseDTO> getAllSkills() {
+    public List<SkillResponse> getAllSkills() {
         return skillRepository.findAll().stream()
                 .map(skillMapper::toResponse)
                 .collect(Collectors.toList());

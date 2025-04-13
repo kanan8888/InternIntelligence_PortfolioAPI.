@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.PortfolioRequestDTO;
-import az.portfolioapi.dto.response.PortfolioResponseDTO;
+import az.portfolioapi.dto.request.PortfolioRequest;
+import az.portfolioapi.dto.response.PortfolioResponse;
 import az.portfolioapi.service.portfolio.PortfolioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,31 +18,31 @@ public class PortfolioController {
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PortfolioResponseDTO> createPortfolio(@RequestBody PortfolioRequestDTO portfolioRequestDTO) {
-        return ResponseEntity.ok(portfolioService.createPortfolio(portfolioRequestDTO));
+    public ResponseEntity<PortfolioResponse> createPortfolio(@RequestBody PortfolioRequest request) {
+        return ResponseEntity.ok(portfolioService.createPortfolio(request));
     }
 
     @PutMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PortfolioResponseDTO> updatePortfolio(@PathVariable Long id, @RequestBody PortfolioRequestDTO portfolioRequestDTO) {
-        return ResponseEntity.ok(portfolioService.updatePortfolio(id, portfolioRequestDTO));
+    public ResponseEntity<PortfolioResponse> updatePortfolio(@PathVariable Long id, @RequestBody PortfolioRequest request) {
+        return ResponseEntity.ok(portfolioService.updatePortfolio(id, request));
     }
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<PortfolioResponseDTO> getPortfolioById(@PathVariable Long id) {
+    public ResponseEntity<PortfolioResponse> getPortfolioById(@PathVariable Long id) {
         return ResponseEntity.ok(portfolioService.getPortfolioById(id));
     }
 
     @GetMapping("/user/{userId}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<List<PortfolioResponseDTO>> getPortfoliosByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<PortfolioResponse>> getPortfoliosByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(portfolioService.getPortfoliosByUserId(userId));
     }
 
     @GetMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<PortfolioResponseDTO>> getAllPortfolios() {
+    public ResponseEntity<List<PortfolioResponse>> getAllPortfolios() {
         return ResponseEntity.ok(portfolioService.getAllPortfolios());
     }
 

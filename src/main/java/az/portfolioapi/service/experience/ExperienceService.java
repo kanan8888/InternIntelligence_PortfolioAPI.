@@ -1,15 +1,16 @@
 package az.portfolioapi.service.experience;
 
-import az.portfolioapi.dto.request.ExperienceRequestDTO;
-import az.portfolioapi.dto.response.ExperienceResponseDTO;
+import az.portfolioapi.dto.request.ExperienceRequest;
+import az.portfolioapi.dto.response.ExperienceResponse;
 
 import java.util.List;
 
 public interface ExperienceService {
-    ExperienceResponseDTO createExperience(ExperienceRequestDTO experienceRequestDTO);
-    ExperienceResponseDTO updateExperience(Long id, ExperienceRequestDTO experienceRequestDTO);
-    ExperienceResponseDTO getExperienceById(Long id);
-    List<ExperienceResponseDTO> getExperiencesByPortfolioId(Long portfolioId);
-    List<ExperienceResponseDTO> getAllExperiences();
+
+    ExperienceResponse createExperience(ExperienceRequest experienceRequest);
+    ExperienceResponse updateExperience(Long id, ExperienceRequest experienceRequest);
+    ExperienceResponse getExperienceById(Long id);
+    List<ExperienceResponse> getExperiencesByPortfolioId(Long portfolioId);
+    List<ExperienceResponse> getAllExperiences();
     void deleteExperience(Long id);
 }

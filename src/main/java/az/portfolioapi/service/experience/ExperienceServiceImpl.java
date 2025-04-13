@@ -1,8 +1,8 @@
 package az.portfolioapi.service.experience;
 
 import az.portfolioapi.configuration.mapper.ExperienceMapper;
-import az.portfolioapi.dto.request.ExperienceRequestDTO;
-import az.portfolioapi.dto.response.ExperienceResponseDTO;
+import az.portfolioapi.dto.request.ExperienceRequest;
+import az.portfolioapi.dto.response.ExperienceResponse;
 import az.portfolioapi.entity.ExperienceEntity;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.exception.ExperienceNotFoundException;
@@ -24,15 +24,15 @@ public class ExperienceServiceImpl implements ExperienceService {
     private final ExperienceMapper experienceMapper;
 
     @Override
-    public ExperienceResponseDTO createExperience(ExperienceRequestDTO experienceRequest) {
+    public ExperienceResponse createExperience(ExperienceRequest experienceRequest) {
         PortfolioEntity portfolio = portfolioRepository.findById(experienceRequest.getPortfolioId())
-                .orElseThrow(()-> new ExperienceNotFoundException("Experience not found with id " + experienceRequest.getPortfolioId()));
+                .orElseThrow(()-> new ExperienceNotFoundException("Portfolio not found with id " + experienceRequest.getPortfolioId()));
         ExperienceEntity experience = experienceMapper.toEntity(experienceRequest,portfolio);
         return experienceMapper.toResponse(experienceRepository.save(experience));
     }
 
     @Override
-    public ExperienceResponseDTO updateExperience(Long id, ExperienceRequestDTO experienceRequest) {
+    public ExperienceResponse updateExperience(Long id, ExperienceRequest experienceRequest) {
         ExperienceEntity experience = experienceRepository.findById(id)
                 .orElseThrow(()-> new ExperienceNotFoundException("Experience not found"));
         experienceMapper.updateEntity(experienceRequest,experience);
@@ -40,14 +40,14 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     @Override
-    public ExperienceResponseDTO getExperienceById(Long id) {
+    public ExperienceResponse getExperienceById(Long id) {
         return experienceRepository.findById(id)
                 .map(experienceMapper::toResponse)
                 .orElseThrow(()-> new ExperienceNotFoundException("Experience not found"));
     }
 
     @Override
-    public List<ExperienceResponseDTO> getExperiencesByPortfolioId(Long portfolioId) {
+    public List<ExperienceResponse> getExperiencesByPortfolioId(Long portfolioId) {
         PortfolioEntity portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(()-> new PortfolioNotFoundException("Portfolio not found"));
         return portfolio.getExperiences().stream()
@@ -56,7 +56,7 @@ public class ExperienceServiceImpl implements ExperienceService {
     }
 
     @Override
-    public List<ExperienceResponseDTO> getAllExperiences() {
+    public List<ExperienceResponse> getAllExperiences() {
         return experienceRepository.findAll().stream()
                 .map(experienceMapper::toResponse)
                 .collect(Collectors.toList());

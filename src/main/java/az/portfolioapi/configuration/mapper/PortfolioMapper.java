@@ -1,27 +1,33 @@
 package az.portfolioapi.configuration.mapper;
 
-import az.portfolioapi.dto.request.PortfolioRequestDTO;
-import az.portfolioapi.dto.response.PortfolioResponseDTO;
+import az.portfolioapi.dto.request.PortfolioRequest;
+import az.portfolioapi.dto.response.PortfolioResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.UserEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
         uses = {EducationMapper.class, ExperienceMapper.class, ProjectMapper.class, SkillMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface PortfolioMapper {
 
     @Mapping(target = "userId", source = "user.id")
-    PortfolioResponseDTO toResponse(PortfolioEntity portfolio);
+    PortfolioResponse toResponse(PortfolioEntity portfolio);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
-    PortfolioEntity toEntity(PortfolioRequestDTO request, UserEntity user);
+    @Mapping(target = "educations", ignore = true)
+    @Mapping(target = "experiences", ignore = true)
+    @Mapping(target = "projects", ignore = true)
+    @Mapping(target = "skills", ignore = true)
+    PortfolioEntity toEntity(PortfolioRequest request, UserEntity user);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", ignore = true)
-    void updateEntity(PortfolioRequestDTO request, @MappingTarget PortfolioEntity portfolio);
+    @Mapping(target = "educations", ignore = true)
+    @Mapping(target = "experiences", ignore = true)
+    @Mapping(target = "projects", ignore = true)
+    @Mapping(target = "skills", ignore = true)
+    void updateEntity(PortfolioRequest request, @MappingTarget PortfolioEntity portfolio);
 }

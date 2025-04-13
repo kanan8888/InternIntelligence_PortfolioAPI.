@@ -1,15 +1,16 @@
 package az.portfolioapi.service.education;
 
-import az.portfolioapi.dto.request.EducationRequestDTO;
-import az.portfolioapi.dto.response.EducationResponseDTO;
+import az.portfolioapi.dto.request.EducationRequest;
+import az.portfolioapi.dto.response.EducationResponse;
 
 import java.util.List;
 
 public interface EducationService {
-    EducationResponseDTO createEducation(EducationRequestDTO educationRequestDTO);
-    EducationResponseDTO updateEducation(Long id, EducationRequestDTO educationRequestDTO);
-    EducationResponseDTO getEducationById(Long id);
-    List<EducationResponseDTO> getEducationsByPortfolioId(Long portfolioId);
-    List<EducationResponseDTO> getAllEducations();
+
+    EducationResponse createEducation(EducationRequest educationRequest);
+    EducationResponse updateEducation(Long id, EducationRequest educationRequest);
+    EducationResponse getEducationById(Long id);
+    List<EducationResponse> getEducationsByPortfolioId(Long portfolioId);
+    List<EducationResponse> getAllEducations();
     void deleteEducation(Long id);
 }

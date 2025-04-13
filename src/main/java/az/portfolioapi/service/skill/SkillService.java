@@ -1,15 +1,16 @@
 package az.portfolioapi.service.skill;
 
-import az.portfolioapi.dto.request.SkillRequestDTO;
-import az.portfolioapi.dto.response.SkillResponseDTO;
+import az.portfolioapi.dto.request.SkillRequest;
+import az.portfolioapi.dto.response.SkillResponse;
 
 import java.util.List;
 
 public interface SkillService {
-    SkillResponseDTO createSkill(SkillRequestDTO skillRequestDTO);
-    SkillResponseDTO updateSkill(Long id, SkillRequestDTO skillRequestDTO);
-    SkillResponseDTO getSkillById(Long id);
-    List<SkillResponseDTO> getSkillsByPortfolioId(Long portfolioId);
-    List<SkillResponseDTO> getAllSkills();
+
+    SkillResponse createSkill(SkillRequest skillRequest);
+    SkillResponse updateSkill(Long id, SkillRequest skillRequest);
+    SkillResponse getSkillById(Long id);
+    List<SkillResponse> getSkillsByPortfolioId(Long portfolioId);
+    List<SkillResponse> getAllSkills();
     void deleteSkill(Long id);
 }

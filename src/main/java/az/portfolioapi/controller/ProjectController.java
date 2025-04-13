@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.ProjectRequestDTO;
-import az.portfolioapi.dto.response.ProjectResponseDTO;
+import az.portfolioapi.dto.request.ProjectRequest;
+import az.portfolioapi.dto.response.ProjectResponse;
 import az.portfolioapi.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,31 +18,31 @@ public class ProjectController {
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProjectResponseDTO> createProject(@RequestBody ProjectRequestDTO projectRequestDTO) {
-        return ResponseEntity.ok(projectService.createProject(projectRequestDTO));
+    public ResponseEntity<ProjectResponse> createProject(@RequestBody ProjectRequest request) {
+        return ResponseEntity.ok(projectService.createProject(request));
     }
 
     @PutMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ProjectResponseDTO> updateProject(@PathVariable Long id, @RequestBody ProjectRequestDTO projectRequestDTO) {
-        return ResponseEntity.ok(projectService.updateProject(id, projectRequestDTO));
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long id, @RequestBody ProjectRequest request) {
+        return ResponseEntity.ok(projectService.updateProject(id, request));
     }
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<ProjectResponseDTO> getProjectById(@PathVariable Long id) {
+    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Long id) {
         return ResponseEntity.ok(projectService.getProjectById(id));
     }
 
     @GetMapping("/portfolio/{portfolioId}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<List<ProjectResponseDTO>> getProjectsByPortfolioId(@PathVariable Long portfolioId) {
+    public ResponseEntity<List<ProjectResponse>> getProjectsByPortfolioId(@PathVariable Long portfolioId) {
         return ResponseEntity.ok(projectService.getProjectsByPortfolioId(portfolioId));
     }
 
     @GetMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<ProjectResponseDTO>> getAllProjects() {
+    public ResponseEntity<List<ProjectResponse>> getAllProjects() {
         return ResponseEntity.ok(projectService.getAllProjects());
     }
 

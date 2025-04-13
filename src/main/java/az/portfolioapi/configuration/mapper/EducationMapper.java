@@ -1,28 +1,27 @@
 package az.portfolioapi.configuration.mapper;
 
-import az.portfolioapi.dto.request.EducationRequestDTO;
-import az.portfolioapi.dto.response.EducationResponseDTO;
+import az.portfolioapi.dto.request.EducationRequest;
+import az.portfolioapi.dto.response.EducationResponse;
 import az.portfolioapi.entity.EducationEntity;
 import az.portfolioapi.entity.PortfolioEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface EducationMapper {
 
     @Mapping(target = "portfolioId", source = "portfolio.id")
-    EducationResponseDTO toResponse(EducationEntity education);
+    EducationResponse toResponse(EducationEntity education);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", source = "portfolio")
-    EducationEntity toEntity(EducationRequestDTO request, PortfolioEntity portfolio);
+    @Mapping(target = "description", source = "request.description")
+    EducationEntity toEntity(EducationRequest request, PortfolioEntity portfolio);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", ignore = true)
-    void updateEntity(EducationRequestDTO request, @MappingTarget EducationEntity education);
+    void updateEntity(EducationRequest request, @MappingTarget EducationEntity education);
 }
 
 
@@ -30,4 +29,4 @@ public interface EducationMapper {
 
 
 //@Mapping(target = "portfolioId", source = "portfolio.id")
-//List<EducationResponseDTO> toResponseList(List<EducationEntity> educationList);
+//List<EducationResponse> toResponseList(List<EducationEntity> educationList);

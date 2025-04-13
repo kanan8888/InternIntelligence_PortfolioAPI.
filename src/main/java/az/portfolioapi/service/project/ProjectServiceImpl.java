@@ -1,8 +1,8 @@
 package az.portfolioapi.service.project;
 
 import az.portfolioapi.configuration.mapper.ProjectMapper;
-import az.portfolioapi.dto.request.ProjectRequestDTO;
-import az.portfolioapi.dto.response.ProjectResponseDTO;
+import az.portfolioapi.dto.request.ProjectRequest;
+import az.portfolioapi.dto.response.ProjectResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.ProjectEntity;
 import az.portfolioapi.exception.PortfolioNotFoundException;
@@ -25,7 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectMapper projectMapper;
 
     @Override
-    public ProjectResponseDTO createProject(ProjectRequestDTO projectRequest) {
+    public ProjectResponse createProject(ProjectRequest projectRequest) {
         PortfolioEntity portfolio = portfolioRepository.findById(projectRequest.getPortfolioId())
                 .orElseThrow(()-> new PortfolioNotFoundException("portfolio not found with id " + projectRequest.getPortfolioId()));
         ProjectEntity project = projectMapper.toEntity(projectRequest,portfolio);
@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDTO updateProject(Long id, ProjectRequestDTO projectRequest) {
+    public ProjectResponse updateProject(Long id, ProjectRequest projectRequest) {
         ProjectEntity project = projectRepository.findById(id)
                 .orElseThrow(()-> new ProjectNotFoundException("project not found with id" + id));
         projectMapper.updateEntity(projectRequest,project);
@@ -41,14 +41,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseDTO getProjectById(Long id) {
+    public ProjectResponse getProjectById(Long id) {
         return projectRepository.findById(id)
                 .map(projectMapper::toResponse)
                 .orElseThrow(()-> new SkillNotFoundException("project not found with id " + id));
     }
 
     @Override
-    public List<ProjectResponseDTO> getProjectsByPortfolioId(Long portfolioId) {
+    public List<ProjectResponse> getProjectsByPortfolioId(Long portfolioId) {
         PortfolioEntity portfolio = portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found with id " + portfolioId));
         return portfolio.getProjects().stream()
@@ -57,7 +57,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectResponseDTO> getAllProjects() {
+    public List<ProjectResponse> getAllProjects() {
         return projectRepository.findAll()
                 .stream()
                 .map(projectMapper::toResponse)

@@ -1,15 +1,16 @@
 package az.portfolioapi.service.project;
 
-import az.portfolioapi.dto.request.ProjectRequestDTO;
-import az.portfolioapi.dto.response.ProjectResponseDTO;
+import az.portfolioapi.dto.request.ProjectRequest;
+import az.portfolioapi.dto.response.ProjectResponse;
 
 import java.util.List;
 
 public interface ProjectService {
-    ProjectResponseDTO createProject(ProjectRequestDTO projectRequestDTO);
-    ProjectResponseDTO updateProject(Long id, ProjectRequestDTO projectRequestDTO);
-    ProjectResponseDTO getProjectById(Long id);
-    List<ProjectResponseDTO> getProjectsByPortfolioId(Long portfolioId);
-    List<ProjectResponseDTO> getAllProjects();
+
+    ProjectResponse createProject(ProjectRequest projectRequest);
+    ProjectResponse updateProject(Long id, ProjectRequest projectRequest);
+    ProjectResponse getProjectById(Long id);
+    List<ProjectResponse> getProjectsByPortfolioId(Long portfolioId);
+    List<ProjectResponse> getAllProjects();
     void deleteProject(Long id);
 }

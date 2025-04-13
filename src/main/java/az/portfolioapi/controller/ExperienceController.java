@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.ExperienceRequestDTO;
-import az.portfolioapi.dto.response.ExperienceResponseDTO;
+import az.portfolioapi.dto.request.ExperienceRequest;
+import az.portfolioapi.dto.response.ExperienceResponse;
 import az.portfolioapi.service.experience.ExperienceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,31 +18,31 @@ public class ExperienceController {
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ExperienceResponseDTO> createExperience(@RequestBody ExperienceRequestDTO experienceRequestDTO) {
-        return ResponseEntity.ok(experienceService.createExperience(experienceRequestDTO));
+    public ResponseEntity<ExperienceResponse> createExperience(@RequestBody ExperienceRequest request) {
+        return ResponseEntity.ok(experienceService.createExperience(request));
     }
 
     @PutMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ExperienceResponseDTO> updateExperience(@PathVariable Long id, @RequestBody ExperienceRequestDTO experienceRequestDTO) {
-        return ResponseEntity.ok(experienceService.updateExperience(id, experienceRequestDTO));
+    public ResponseEntity<ExperienceResponse> updateExperience(@PathVariable Long id, @RequestBody ExperienceRequest request) {
+        return ResponseEntity.ok(experienceService.updateExperience(id, request));
     }
 
     @GetMapping("/{id}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<ExperienceResponseDTO> getExperienceById(@PathVariable Long id) {
+    public ResponseEntity<ExperienceResponse> getExperienceById(@PathVariable Long id) {
         return ResponseEntity.ok(experienceService.getExperienceById(id));
     }
 
     @GetMapping("/portfolio/{portfolioId}")
     //@PreAuthorize("hasRole('ADMIN') or hasRole('MEMBER')")
-    public ResponseEntity<List<ExperienceResponseDTO>> getExperiencesByPortfolioId(@PathVariable Long portfolioId) {
+    public ResponseEntity<List<ExperienceResponse>> getExperiencesByPortfolioId(@PathVariable Long portfolioId) {
         return ResponseEntity.ok(experienceService.getExperiencesByPortfolioId(portfolioId));
     }
 
     @GetMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<ExperienceResponseDTO>> getAllExperiences() {
+    public ResponseEntity<List<ExperienceResponse>> getAllExperiences() {
         return ResponseEntity.ok(experienceService.getAllExperiences());
     }
 

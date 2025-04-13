@@ -1,26 +1,24 @@
 package az.portfolioapi.configuration.mapper;
 
-import az.portfolioapi.dto.request.SkillRequestDTO;
-import az.portfolioapi.dto.response.SkillResponseDTO;
+import az.portfolioapi.dto.request.SkillRequest;
+import az.portfolioapi.dto.response.SkillResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.SkillEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface SkillMapper {
 
     @Mapping(target = "portfolioId", source = "portfolio.id")
-    SkillResponseDTO toResponse(SkillEntity skill);
+    SkillResponse toResponse(SkillEntity skill);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", source = "portfolio")
-    SkillEntity toEntity(SkillRequestDTO request, PortfolioEntity portfolio);
+    SkillEntity toEntity(SkillRequest request, PortfolioEntity portfolio);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", ignore = true)
-    void update(SkillRequestDTO request, @MappingTarget SkillEntity skill);
+    void update(SkillRequest request, @MappingTarget SkillEntity skill);
 }
