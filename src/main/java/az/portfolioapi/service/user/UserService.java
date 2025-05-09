@@ -1,7 +1,7 @@
 package az.portfolioapi.service.user;
 
-import az.portfolioapi.dto.request.UserRequest;
-import az.portfolioapi.dto.response.UserResponse;
+import az.portfolioapi.dto.User.UserRequest;
+import az.portfolioapi.dto.User.UserResponse;
 
 import java.util.List;
 

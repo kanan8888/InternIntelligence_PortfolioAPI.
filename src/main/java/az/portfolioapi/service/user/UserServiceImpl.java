@@ -1,8 +1,8 @@
 package az.portfolioapi.service.user;
 
-import az.portfolioapi.configuration.mapper.UserMapper;
-import az.portfolioapi.dto.request.UserRequest;
-import az.portfolioapi.dto.response.UserResponse;
+import az.portfolioapi.mapper.UserMapper;
+import az.portfolioapi.dto.User.UserRequest;
+import az.portfolioapi.dto.User.UserResponse;
 import az.portfolioapi.entity.UserEntity;
 import az.portfolioapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

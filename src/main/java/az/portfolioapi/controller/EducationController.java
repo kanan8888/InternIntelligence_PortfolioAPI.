@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.EducationRequest;
-import az.portfolioapi.dto.response.EducationResponse;
+import az.portfolioapi.dto.Education.EducationRequest;
+import az.portfolioapi.dto.Education.EducationResponse;
 import az.portfolioapi.service.education.EducationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

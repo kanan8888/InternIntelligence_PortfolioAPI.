@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.SkillRequest;
-import az.portfolioapi.dto.response.SkillResponse;
+import az.portfolioapi.dto.Skill.SkillRequest;
+import az.portfolioapi.dto.Skill.SkillResponse;
 import az.portfolioapi.service.skill.SkillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

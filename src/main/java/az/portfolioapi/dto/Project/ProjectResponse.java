@@ -1,4 +1,4 @@
-package az.portfolioapi.dto.response;
+package az.portfolioapi.dto.Project;
 
 import lombok.AccessLevel;
 import lombok.Data;

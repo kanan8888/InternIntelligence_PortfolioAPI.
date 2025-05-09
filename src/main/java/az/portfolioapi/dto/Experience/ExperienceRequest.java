@@ -1,6 +1,5 @@
-package az.portfolioapi.dto.response;
+package az.portfolioapi.dto.Experience;
 
-import az.portfolioapi.entity.enums.DegreeLevel;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -9,13 +8,12 @@ import java.time.LocalDate;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EducationResponse {
+public class ExperienceRequest {
 
-    Long id;
-    String institution;
-    DegreeLevel degree;
-    String description;
+    String company;
+    String position;
     LocalDate startDate;
     LocalDate endDate;
+    String description;
     Long portfolioId;
 }

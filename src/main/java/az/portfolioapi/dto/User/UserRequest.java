@@ -1,4 +1,4 @@
-package az.portfolioapi.dto.request;
+package az.portfolioapi.dto.User;
 
 import az.portfolioapi.entity.enums.UserRole;
 import lombok.AccessLevel;
@@ -8,6 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
+
+    String fullName;
 
 //    @NotEmpty(message = "Username cannot be empty")
 //    @Size(min = 5, max = 30, message = "Username size must be between 5 and 30")

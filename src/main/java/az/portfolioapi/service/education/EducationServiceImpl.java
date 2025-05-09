@@ -1,8 +1,8 @@
 package az.portfolioapi.service.education;
 
-import az.portfolioapi.configuration.mapper.EducationMapper;
-import az.portfolioapi.dto.request.EducationRequest;
-import az.portfolioapi.dto.response.EducationResponse;
+import az.portfolioapi.mapper.EducationMapper;
+import az.portfolioapi.dto.Education.EducationRequest;
+import az.portfolioapi.dto.Education.EducationResponse;
 import az.portfolioapi.entity.EducationEntity;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.exception.EducationNotFoundException;

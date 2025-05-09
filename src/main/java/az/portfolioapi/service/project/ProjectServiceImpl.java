@@ -1,8 +1,8 @@
 package az.portfolioapi.service.project;
 
-import az.portfolioapi.configuration.mapper.ProjectMapper;
-import az.portfolioapi.dto.request.ProjectRequest;
-import az.portfolioapi.dto.response.ProjectResponse;
+import az.portfolioapi.mapper.ProjectMapper;
+import az.portfolioapi.dto.Project.ProjectRequest;
+import az.portfolioapi.dto.Project.ProjectResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.ProjectEntity;
 import az.portfolioapi.exception.PortfolioNotFoundException;

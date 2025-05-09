@@ -1,7 +1,7 @@
 package az.portfolioapi.controller;
 
-import az.portfolioapi.dto.request.ProjectRequest;
-import az.portfolioapi.dto.response.ProjectResponse;
+import az.portfolioapi.dto.Project.ProjectRequest;
+import az.portfolioapi.dto.Project.ProjectResponse;
 import az.portfolioapi.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

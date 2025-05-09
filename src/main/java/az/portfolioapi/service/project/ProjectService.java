@@ -1,7 +1,7 @@
 package az.portfolioapi.service.project;
 
-import az.portfolioapi.dto.request.ProjectRequest;
-import az.portfolioapi.dto.response.ProjectResponse;
+import az.portfolioapi.dto.Project.ProjectRequest;
+import az.portfolioapi.dto.Project.ProjectResponse;
 
 import java.util.List;
 

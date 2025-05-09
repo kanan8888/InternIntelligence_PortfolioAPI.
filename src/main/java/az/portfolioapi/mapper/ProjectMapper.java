@@ -1,7 +1,7 @@
-package az.portfolioapi.configuration.mapper;
+package az.portfolioapi.mapper;
 
-import az.portfolioapi.dto.request.ProjectRequest;
-import az.portfolioapi.dto.response.ProjectResponse;
+import az.portfolioapi.dto.Project.ProjectRequest;
+import az.portfolioapi.dto.Project.ProjectResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.ProjectEntity;
 import org.mapstruct.*;

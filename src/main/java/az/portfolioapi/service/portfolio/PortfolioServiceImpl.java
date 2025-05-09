@@ -1,11 +1,10 @@
 package az.portfolioapi.service.portfolio;
 
-import az.portfolioapi.configuration.mapper.PortfolioMapper;
-import az.portfolioapi.dto.request.PortfolioRequest;
-import az.portfolioapi.dto.response.PortfolioResponse;
+import az.portfolioapi.mapper.PortfolioMapper;
+import az.portfolioapi.dto.Portfolio.PortfolioRequest;
+import az.portfolioapi.dto.Portfolio.PortfolioResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.UserEntity;
-import az.portfolioapi.entity.enums.UserRole;
 import az.portfolioapi.exception.PortfolioNotFoundException;
 import az.portfolioapi.repository.PortfolioRepository;
 import az.portfolioapi.repository.UserRepository;

@@ -1,7 +1,7 @@
 package az.portfolioapi.service.education;
 
-import az.portfolioapi.dto.request.EducationRequest;
-import az.portfolioapi.dto.response.EducationResponse;
+import az.portfolioapi.dto.Education.EducationRequest;
+import az.portfolioapi.dto.Education.EducationResponse;
 
 import java.util.List;
 

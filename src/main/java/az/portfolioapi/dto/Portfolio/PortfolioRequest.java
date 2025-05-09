@@ -1,4 +1,4 @@
-package az.portfolioapi.dto.request;
+package az.portfolioapi.dto.Portfolio;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -6,10 +6,9 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectRequest {
+public class PortfolioRequest {
 
     String title;
     String description;
-    String url;
-    Long portfolioId;
+    Long userId;
 }

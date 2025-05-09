@@ -1,7 +1,7 @@
 package az.portfolioapi.service.skill;
 
-import az.portfolioapi.dto.request.SkillRequest;
-import az.portfolioapi.dto.response.SkillResponse;
+import az.portfolioapi.dto.Skill.SkillRequest;
+import az.portfolioapi.dto.Skill.SkillResponse;
 
 import java.util.List;
 

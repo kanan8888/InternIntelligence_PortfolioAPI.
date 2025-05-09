@@ -1,5 +1,9 @@
-package az.portfolioapi.dto.response;
+package az.portfolioapi.dto.Portfolio;
 
+import az.portfolioapi.dto.Education.EducationResponse;
+import az.portfolioapi.dto.Experience.ExperienceResponse;
+import az.portfolioapi.dto.Project.ProjectResponse;
+import az.portfolioapi.dto.Skill.SkillResponse;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;

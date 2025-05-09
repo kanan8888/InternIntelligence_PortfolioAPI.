@@ -1,4 +1,4 @@
-package az.portfolioapi.dto.response;
+package az.portfolioapi.dto.Skill;
 
 import az.portfolioapi.entity.enums.SkillLevel;
 import lombok.AccessLevel;

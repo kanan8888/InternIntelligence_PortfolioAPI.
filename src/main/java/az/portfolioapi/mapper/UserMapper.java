@@ -1,7 +1,9 @@
-package az.portfolioapi.configuration.mapper;
+package az.portfolioapi.mapper;
 
-import az.portfolioapi.dto.request.UserRequest;
-import az.portfolioapi.dto.response.UserResponse;
+import az.portfolioapi.dto.auth.request.RegisterRequest;
+import az.portfolioapi.dto.User.UserRequest;
+import az.portfolioapi.dto.User.UserResponse;
+import az.portfolioapi.dto.auth.response.RegisterResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.UserEntity;
 import org.mapstruct.*;
@@ -18,9 +20,16 @@ public interface UserMapper {
     @Mapping(target = "portfolioIds", source = "portfolios", qualifiedByName = "mapPortfoliosToPortfolioIds")
     UserResponse toResponse(UserEntity user);
 
+    RegisterResponse toRegisterResponse(UserEntity user);
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolios", ignore = true)
     UserEntity toEntity(UserRequest request);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "portfolios", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    UserEntity toEntity(RegisterRequest request);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolios", ignore = true)
@@ -35,3 +44,4 @@ public interface UserMapper {
                 .collect(Collectors.toList());
     }
 }
+

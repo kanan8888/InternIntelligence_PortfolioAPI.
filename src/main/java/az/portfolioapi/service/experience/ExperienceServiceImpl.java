@@ -1,8 +1,8 @@
 package az.portfolioapi.service.experience;
 
-import az.portfolioapi.configuration.mapper.ExperienceMapper;
-import az.portfolioapi.dto.request.ExperienceRequest;
-import az.portfolioapi.dto.response.ExperienceResponse;
+import az.portfolioapi.mapper.ExperienceMapper;
+import az.portfolioapi.dto.Experience.ExperienceRequest;
+import az.portfolioapi.dto.Experience.ExperienceResponse;
 import az.portfolioapi.entity.ExperienceEntity;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.exception.ExperienceNotFoundException;

@@ -1,8 +1,8 @@
 package az.portfolioapi.service.skill;
 
-import az.portfolioapi.configuration.mapper.SkillMapper;
-import az.portfolioapi.dto.request.SkillRequest;
-import az.portfolioapi.dto.response.SkillResponse;
+import az.portfolioapi.mapper.SkillMapper;
+import az.portfolioapi.dto.Skill.SkillRequest;
+import az.portfolioapi.dto.Skill.SkillResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.SkillEntity;
 import az.portfolioapi.exception.PortfolioNotFoundException;
