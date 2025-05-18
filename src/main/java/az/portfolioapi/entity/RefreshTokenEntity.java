@@ -1,35 +1,36 @@
 package az.portfolioapi.entity;
 
+import az.portfolioapi.entity.common.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
+import lombok.*;
+import java.time.Instant;
 
 @Entity
-@Builder
-@Data
+@Table(name = "refresh_tokens", indexes = {
+        @Index(name = "idx_refresh_tokens_token", columnList = "token", unique = true)
+})
+@Getter
+@Setter
+@ToString(callSuper = true, exclude = "user") /**/
 @NoArgsConstructor
 @AllArgsConstructor
-public class RefreshTokenEntity {
+@Builder /**/
+/**/@EqualsAndHashCode(of = "id")
+public class RefreshTokenEntity /*extends BaseEntity*/ {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
-    @Column(nullable = false, unique = true, length = 512)
+    @Column(nullable = false, length = 2000) /**/
     private String token;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @Column(nullable = false)
+    private Instant expiryDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    @Column(nullable = false)
-    private LocalDateTime expiryDate;
-
     public boolean isExpired() {
-        return expiryDate.isBefore(LocalDateTime.now());
+        return expiryDate.isBefore(Instant.now());
     }
 }

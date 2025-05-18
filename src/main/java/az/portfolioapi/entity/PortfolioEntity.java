@@ -1,37 +1,49 @@
 package az.portfolioapi.entity;
 
+import az.portfolioapi.entity.common.BaseAuditableEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.experimental.FieldDefaults;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Data
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class PortfolioEntity {
+@Table(name = "portfolios")
+@Getter
+@Setter
+@ToString(callSuper = true, exclude = {"user","educations","experiences","projects","skills"}) /**/
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder /**/
+/**/@EqualsAndHashCode(of = "id") @EntityListeners(AuditingEntityListener.class)
+public class PortfolioEntity /*extends BaseAuditableEntity*/ {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)   private Long id;
+    @CreatedDate @Column(updatable = false, nullable = false) private Instant createdAt;
+    @LastModifiedDate                                         private Instant updatedAt;
 
-    String title;
-    String description;
+    @Column(nullable = false, length = 200)
+    private String title;
 
-    @ManyToOne
+    @Column(length = 2000)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    UserEntity user;
+    private UserEntity user;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<EducationEntity> educations;
+    private List<EducationEntity> educations;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<ExperienceEntity> experiences;
+    private List<ExperienceEntity> experiences;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<ProjectEntity> projects;
+    private List<ProjectEntity> projects;
 
     @OneToMany(mappedBy = "portfolio", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    List<SkillEntity> skills;
+    private List<SkillEntity> skills;
 }

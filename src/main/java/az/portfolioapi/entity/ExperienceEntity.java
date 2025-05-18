@@ -1,33 +1,45 @@
 package az.portfolioapi.entity;
 
+import az.portfolioapi.entity.common.BaseAuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.Instant;
 import java.time.LocalDate;
 
 @Entity
-@Data
-@Builder
 @Table(name = "experiences")
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Getter
+@Setter
+@ToString(callSuper = true, exclude = "portfolio") /**/
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExperienceEntity {
+@Builder /**/
+/**/@EqualsAndHashCode(of = "id") @EntityListeners(AuditingEntityListener.class)
+public class ExperienceEntity /*extends BaseAuditableEntity*/ {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)   private Long id;
+    @CreatedDate @Column(updatable = false, nullable = false) private Instant createdAt;
+    @LastModifiedDate                                         private Instant updatedAt;
 
-    String company;
-    String position;
-    LocalDate startDate;
-    LocalDate endDate;
+    @Column(nullable = false, length = 200)
+    private String company;
+
+    @Column(nullable = false, length = 200)
+    private String position;
+
+    @Column(nullable = false)
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @Column(length = 2000)
-    String description;
+    private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
-    PortfolioEntity portfolio;
+    private PortfolioEntity portfolio;
 }

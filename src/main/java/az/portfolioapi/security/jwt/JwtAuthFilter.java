@@ -39,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 authenticateUser(jwt, request);
             }
         } catch (Exception ex) {
-            log.error("Authentication failed", ex);
+            log.error("Authentication failed: {}", ex.getMessage());
             request.setAttribute("auth_error", ex);
         }
         filterChain.doFilter(request, response);

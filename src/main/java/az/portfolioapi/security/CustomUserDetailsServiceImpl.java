@@ -18,21 +18,13 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            UserEntity user = userRepository.findByUserName(username)
-                    .orElseThrow(() -> new UsernameNotFoundException("İstifadəçi tapılmadı: " + username));
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(() -> {
+                    log.error("User not found: {}", username);
+                    return new UsernameNotFoundException("User not found: " + username);
+                });
 
-            log.debug("İstifadəçi yükləndi: {}, Email: {}", user.getUserName(), user.getEmail());
-
-            return new CustomUserDetails(user);
-        } catch (UsernameNotFoundException ex) {
-            log.error("İstifadəçi tapılmadı: {}", username);
-            throw ex;
-        } catch (Exception ex) {
-            log.error("İstifadəçi yüklənərkən xəta: {}", ex.getMessage());
-            throw new UsernameNotFoundException("İstifadəçi yüklənərkən xəta", ex);
-        }
+        log.debug("User loaded: {}", username);
+        return new CustomUserDetails(user);
     }
 }
-
-

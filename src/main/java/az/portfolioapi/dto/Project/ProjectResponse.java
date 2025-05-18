@@ -14,7 +14,7 @@ public class ProjectResponse {
     String title;
     String description;
     String url;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+//    LocalDateTime createdAt;
+//    LocalDateTime updatedAt;
     Long portfolioId;
 }

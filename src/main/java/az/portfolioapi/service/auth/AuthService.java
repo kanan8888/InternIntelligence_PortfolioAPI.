@@ -10,6 +10,6 @@ public interface AuthService {
     RegisterResponse register(RegisterRequest request);
     TokenResponse login(LoginRequest request);
     TokenResponse refresh(String refreshToken);
-    //void logout(); //hələlik sadəcə refreshtokeni cookiedən silməklə edirəm, blacklist məntiqi yoxdur  deyə ehtiyac yoxdur bu methoda
+    //void logout(); //hələlik sadəcə refreshtokeni cookiedən silməklə logout edirəm, blacklist məntiqi yoxdur  deyə bu methoda ehtiyac yoxdur
 }
 

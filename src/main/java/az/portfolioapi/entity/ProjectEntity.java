@@ -1,40 +1,39 @@
 package az.portfolioapi.entity;
 
+import az.portfolioapi.entity.common.BaseAuditableEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.FieldDefaults;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
-@Data
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@Table(name = "projects")
+@Getter
+@Setter
+@ToString(callSuper = true, exclude = "portfolio") /**/
 @NoArgsConstructor
-public class ProjectEntity {
+@AllArgsConstructor
+@Builder /**/
+/**/@EqualsAndHashCode(of = "id") @EntityListeners(AuditingEntityListener.class)
+public class ProjectEntity /*extends BaseAuditableEntity*/ {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)   private Long id;
+    @CreatedDate @Column(updatable = false, nullable = false) private Instant createdAt;
+    @LastModifiedDate                                         private Instant updatedAt;
 
-    String title;
-    String description;
-    String url;
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
+    @Column(nullable = false, length = 200)
+    private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "portfolio_id")
-    PortfolioEntity portfolio;
+    @Column(length = 2000)
+    private String description;
 
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(length = 2000)
+    private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "portfolio_id", nullable = false)
+    private PortfolioEntity portfolio;
 }

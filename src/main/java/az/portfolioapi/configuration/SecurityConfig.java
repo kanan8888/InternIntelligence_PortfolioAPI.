@@ -31,7 +31,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-//                .cors(AbstractHttpConfigurer::disable) // bəlkə gələcəkdə kommetdən çıxardım....
+//                ..cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .exceptionHandling(handling -> handling
                         .authenticationEntryPoint(jwtAuthEntryPoint)
                 )
@@ -40,17 +40,12 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",
+                                "/api/v1/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-//                .oauth2ResourceServer(server -> server
-//                        .jwt(Customizer.withDefaults())
-//                        .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint())
-//                        .accessDeniedHandler(new BearerTokenAccessDeniedHandler())
-//                )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -68,15 +63,16 @@ public class SecurityConfig {
     }
 
 //    @Bean
-//    public CorsFilter corsFilter() {
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//    public CorsConfigurationSource corsConfigurationSource() {
 //        CorsConfiguration config = new CorsConfiguration();
-//        config.setAllowCredentials(true);
-//        config.addAllowedOriginPattern("*"); // Productionda konkret ünvan qoy
-//        config.addAllowedHeader("*");
-//        config.addAllowedMethod("*");
-//        source.registerCorsConfiguration("/**", config);
-//        return new CorsFilter(source);
+//        config.setAllowCredentials(true);  // Cookie/auth bağlantıları üçün
+//        config.addAllowedOriginPattern("*");  // Productionda "https://my-frontend.com" kimi dəyişmeliyem
+//        config.addAllowedHeader("*");  // Bütün header-lərə icazə
+//        config.addAllowedMethod("*");  // Bütün HTTP metodlarına icazə (GET, POST, vs.)
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);  // Bütün endpointlər üçün
+//        return source;
 //    }
 }
 

@@ -11,14 +11,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/educations")
+@RequestMapping("/api/v1/educations")
 public class EducationController {
 
     private final EducationService educationService;
 
     @PostMapping
     //@PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<EducationResponse> create(@RequestBody EducationRequest request) {
+    public ResponseEntity<EducationResponse> createEducation(@RequestBody EducationRequest request) {
         return ResponseEntity.ok(educationService.createEducation(request));
     }
 

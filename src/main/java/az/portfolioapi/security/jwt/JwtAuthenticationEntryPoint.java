@@ -15,13 +15,14 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request,
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
+
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().write("""
             {
                 "status": 401,
                 "error": "Unauthorized",
-                "message": "Giriş tələb olunur"
+                "message": "Authentication required"
             }
             """);
     }
@@ -31,7 +32,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException.getMessage());
     }

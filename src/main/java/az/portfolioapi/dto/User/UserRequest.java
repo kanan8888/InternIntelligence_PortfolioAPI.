@@ -1,6 +1,11 @@
 package az.portfolioapi.dto.User;
 
 import az.portfolioapi.entity.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -9,19 +14,24 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserRequest {
 
+    static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+
+    @NotBlank(message = "Full name cannot be blank")
+    @Size(min = 5, max = 50, message = "Full name must be 5-50 characters")
     String fullName;
 
-//    @NotEmpty(message = "Username cannot be empty")
-//    @Size(min = 5, max = 30, message = "Username size must be between 5 and 30")
-    String userName;
+    @NotBlank(message = "Username cannot be blank")
+    @Size(min = 5, max = 20, message = "Username must be 5-20 characters")
+    String username;
 
-//    @NotEmpty(message = "Email cannot be empty")
-//    @Email
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Email should be valid")
     String email;
 
-//    @NotEmpty(message = "Password cannot be empty")
-//    @Size(min = 5, max = 25,message = "Password size must be between 5 and 25")
+    @NotBlank(message = "Password cannot be blank")
+    @Size(min = 4, max = 20, message = "Password must be 4-20 characters")
+    @Pattern(regexp = PASSWORD_REGEX, message = "Password must contain at least 1 uppercase letter (A-Z), 1 lowercase letter (a-z), and 1 digit (0-9)")
     String password;
 
-    UserRole role;
+    UserRole role = UserRole.MEMBER;
 }

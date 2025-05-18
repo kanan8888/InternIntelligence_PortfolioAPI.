@@ -14,8 +14,13 @@ public class RegisterResponse {
 
     Long id;
     String fullName;
-    String userName;
+    String username;
     String email;
 }
 
 //    private LocalDateTime registrationDate;
+
+/*
+    String firstname
+    String lastname
+ */

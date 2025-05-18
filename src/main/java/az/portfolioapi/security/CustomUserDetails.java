@@ -26,7 +26,7 @@ public class CustomUserDetails implements UserDetails {
 
     public CustomUserDetails(UserEntity user) {
         this.id = user.getId();
-        this.username = user.getUserName();
+        this.username = user.getUsername();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = true;

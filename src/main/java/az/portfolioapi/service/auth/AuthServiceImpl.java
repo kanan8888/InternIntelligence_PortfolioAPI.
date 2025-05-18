@@ -1,6 +1,7 @@
 package az.portfolioapi.service.auth;
 
 import az.portfolioapi.entity.RefreshTokenEntity;
+import az.portfolioapi.mapper.AuthMapper;
 import az.portfolioapi.mapper.UserMapper;
 import az.portfolioapi.dto.auth.request.LoginRequest;
 import az.portfolioapi.dto.auth.request.RegisterRequest;
@@ -11,6 +12,7 @@ import az.portfolioapi.repository.RefreshTokenRepository;
 import az.portfolioapi.repository.UserRepository;
 import az.portfolioapi.security.CustomUserDetails;
 import az.portfolioapi.security.CustomUserDetailsServiceImpl;
+import az.portfolioapi.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,42 +26,35 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenServiceImpl jwtService;
-    private final UserMapper userMapper;
-
+    private final UserServiceImpl userService;
     private final CustomUserDetailsServiceImpl customUserDetailsService;
+    private final AuthMapper authMapper;
 
     @Override
     public RegisterResponse register(RegisterRequest request) {
-        if (userRepository.existsByEmail(request.getEmail()))
-            throw new RuntimeException("User with email " + request.getEmail() + " already exists.");
+        return authMapper.userResponseToRegisterResponse(
 
-        if (userRepository.existsByUserName(request.getUserName()))
-            throw new RuntimeException("User with userName " + request.getUserName() + " already exists.");
-
-        UserEntity user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        UserEntity savedUser = userRepository.save(user);
-        return userMapper.toRegisterResponse(savedUser);
+                userService.createUser(
+                        authMapper.registerRequestToUserRequest(request)
+                )
+        );
     }
 
     @Override
     public TokenResponse login(LoginRequest request) {
             // İstifadəçi adı və şifrəni yoxla
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUserName(), request.getPassword())
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
             );
 
 //            // İstifadəçi məlumatlarını əldə et
 //            UserEntity user = userRepository.findByUserName(request.getUserName())
 //                    .orElseThrow(() -> new RuntimeException("İstifadəçi adı və ya şifrə yalnışdır!"));
 
-            UserDetails user = customUserDetailsService.loadUserByUsername(request.getUserName());
+            UserDetails user = customUserDetailsService.loadUserByUsername(request.getUsername());
 
             // Token yaradılır (istifadəçi məlumatları daxil edilir)
             String jwtAccessToken = jwtService.generateAccessToken(user);
@@ -84,10 +79,11 @@ public class AuthServiceImpl implements AuthService {
         UserEntity user = refreshToken.getUser();
 
         String newAccessToken = jwtService.generateAccessToken(new CustomUserDetails(user));
+        String newRefreshToken = jwtService.generateRefreshToken(new CustomUserDetails(user));
 
         return TokenResponse.builder()
                 .accessToken(newAccessToken)
-                .refreshToken(oldRefreshToken)
+                .refreshToken(newRefreshToken)
                 .build();
     }
 }

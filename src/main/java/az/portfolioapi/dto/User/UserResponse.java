@@ -13,7 +13,7 @@ public class UserResponse {
 
     Long id;
     String fullName;
-    String userName;
+    String username;
     String email;
     UserRole role;
     List<Long> portfolioIds;

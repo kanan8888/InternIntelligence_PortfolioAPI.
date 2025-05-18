@@ -20,8 +20,6 @@ public interface UserMapper {
     @Mapping(target = "portfolioIds", source = "portfolios", qualifiedByName = "mapPortfoliosToPortfolioIds")
     UserResponse toResponse(UserEntity user);
 
-    RegisterResponse toRegisterResponse(UserEntity user);
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolios", ignore = true)
     UserEntity toEntity(UserRequest request);

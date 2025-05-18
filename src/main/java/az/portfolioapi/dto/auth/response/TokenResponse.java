@@ -15,6 +15,6 @@ public class TokenResponse {
 
     String accessToken;
 
-    @JsonIgnore // refreshtoken cookie yə yazılacaqsa jsonignore etmək məntiqlidir sanki
+    @JsonIgnore // refreshtoken cookie yə yazılacaqsa, jsonignore etmək məntiqlidir sanki
     String refreshToken;
 }

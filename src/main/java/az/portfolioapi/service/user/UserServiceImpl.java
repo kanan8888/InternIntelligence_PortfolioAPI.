@@ -1,11 +1,13 @@
 package az.portfolioapi.service.user;
 
+import az.portfolioapi.entity.ExperienceEntity;
 import az.portfolioapi.mapper.UserMapper;
 import az.portfolioapi.dto.User.UserRequest;
 import az.portfolioapi.dto.User.UserResponse;
 import az.portfolioapi.entity.UserEntity;
 import az.portfolioapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +18,21 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
-
     @Override
-    public UserResponse createUser(UserRequest userRequest) {
-        return null;
+    public UserResponse createUser(UserRequest request) {
+        if (userRepository.existsByEmail(request.getEmail()))
+            throw new RuntimeException("User with email " + request.getEmail() + " already exists.");
+
+        if (userRepository.existsByUsername(request.getUsername()))
+            throw new RuntimeException("User with userName " + request.getUsername() + " already exists.");
+
+        UserEntity user = userMapper.toEntity(request);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return userMapper.toResponse(userRepository.save(user));
     }
 
     @Override

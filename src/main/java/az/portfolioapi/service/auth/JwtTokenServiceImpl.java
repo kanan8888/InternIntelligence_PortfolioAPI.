@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.function.Function;
@@ -46,15 +47,15 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     /**************************************************************************************************************/
     public String generateRefreshToken(UserDetails userDetails) {
-        String token = buildToken(userDetails, refreshTokenExpiration);
-
-        UserEntity user = userRepository.findByUserName(userDetails.getUsername())
+        UserEntity user = userRepository.findByUsername(userDetails.getUsername())
                 .orElseThrow(()-> new RuntimeException("User not found"));
+
+        String token = buildToken(userDetails, refreshTokenExpiration);
 
         RefreshTokenEntity refreshToken = RefreshTokenEntity.builder()
                 .token(token)
                 .user(user)
-                .expiryDate(LocalDateTime.now().plus(Duration.ofMillis(604800000)))
+                .expiryDate(Instant.now().plus(Duration.ofMillis(refreshTokenExpiration)))
                 .build();
 
         refreshTokenRepository.save(refreshToken); //

@@ -8,6 +8,7 @@ import az.portfolioapi.service.auth.AuthService;
 import az.portfolioapi.util.cookie.CookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody @Valid RegisterRequest request) {
         RegisterResponse response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@RequestBody LoginRequest request,
+    public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest request,
                                                       HttpServletResponse response) {
         TokenResponse tokenResponse = authService.login(request);
         CookieUtil.addRefreshToken(response, tokenResponse.getRefreshToken());
@@ -38,18 +39,22 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refresh(HttpServletRequest request) {                //sadəcə refresh tokeni deyil, hər iki tokeni yeniləməkdə olar, amma buna sonra baxaram
-        String refreshToken = CookieUtil.getRefreshToken(request);
-        TokenResponse tokenResponse = authService.refresh(refreshToken);
+    public ResponseEntity<TokenResponse> refresh(HttpServletRequest request,
+                                                 HttpServletResponse response) {
+        TokenResponse tokenResponse = authService.refresh(CookieUtil.getRefreshToken(request));
+        CookieUtil.deleteRefreshToken(response);
+        CookieUtil.addRefreshToken(response, tokenResponse.getRefreshToken());
         return ResponseEntity.ok(tokenResponse);
-    }
+    } /* delete + add = update ? */
 
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(HttpServletResponse response) {                       //accesToken üçün blackList məntiqidə tətbiq etmək olar, bəlkə edərəm gələcəkdə
+    public ResponseEntity<Void> logout(HttpServletResponse response) {                  //acces token üçün blackList məntiqi də tətbiq etmək olar, bəlkə edərəm nəvaxtsa...
         CookieUtil.deleteRefreshToken(response);
         return ResponseEntity.ok().build();
     }
 }
+
+
 
 /*
 
@@ -68,7 +73,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request, HttpServletResponse response) {
-        LoginResponse loginResponse = authService.login(request, response); // response-ə cookie yaza bilər
+        LoginResponse loginResponse = authService.login(request, response);
         return ResponseEntity.ok(loginResponse);
     }
 
@@ -78,10 +83,13 @@ public class AuthController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<TokenResponse> refreshToken(HttpServletRequest request, HttpServletResponse response) {
-        TokenResponse newTokens = authService.refreshToken(request, response);
-        return ResponseEntity.ok(newTokens);
+    @PostMapping("/refresh")                  // bu methodu gələcəkdə istifadə edəcəm hazırki refresh methodunun yerinə
+    public ResponseEntity<TokenResponse> refresh(HttpServletRequest request, HttpServletResponse response) {
+        String oldRefreshToken = CookieUtil.getRefreshToken(request);
+        TokenResponse tokenResponse = authService.refresh(oldRefreshToken);
+        CookieUtil.deleteRefreshToken(response);
+        CookieUtil.addRefreshToken(response, tokenResponse.getRefreshToken());
+        return ResponseEntity.ok(tokenResponse);
     }
 
     @GetMapping("/me")
