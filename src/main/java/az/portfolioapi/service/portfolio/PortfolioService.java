@@ -2,15 +2,18 @@ package az.portfolioapi.service.portfolio;
 
 import az.portfolioapi.dto.Portfolio.PortfolioRequest;
 import az.portfolioapi.dto.Portfolio.PortfolioResponse;
+import az.portfolioapi.entity.enums.UserRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface PortfolioService {
 
-    PortfolioResponse createPortfolio(PortfolioRequest portfolioRequest);
-    PortfolioResponse updatePortfolio(Long id, PortfolioRequest portfolioRequest);
-    PortfolioResponse getPortfolioById(Long id);
-    List<PortfolioResponse> getPortfoliosByUserId(Long userId);
-    List<PortfolioResponse> getAllPortfolios();
-    void deletePortfolio(Long id);
+    PortfolioResponse createPortfolio(Long userId, PortfolioRequest request);
+    PortfolioResponse updatePortfolio(Long portfolioId, Long userId, PortfolioRequest request);
+    PortfolioResponse getPortfolioById(Long portfolioId, Long userId, UserRole role);
+    Page<PortfolioResponse> getPortfoliosByUserId(Long userId, Pageable pageable);
+    Page<PortfolioResponse> getAllPortfolios(Pageable pageable);
+    void deletePortfolio(Long portfolioId, Long userId, UserRole role);
 }

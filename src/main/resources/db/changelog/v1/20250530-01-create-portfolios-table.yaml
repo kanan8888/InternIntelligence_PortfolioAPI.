@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20250530-01
+      author: kanan8888
+      changes:
+
+        - createTable:
+            tableName: portfolios
+            columns:
+
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: title
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: description
+                  type: VARCHAR(2000)
+
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP
+
+        - addForeignKeyConstraint:
+            baseTableName: portfolios
+            baseColumnNames: user_id
+            constraintName: fk_portfolio_user
+            referencedTableName: users
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - createIndex:
+            indexName: idx_portfolio_user_id
+            tableName: portfolios
+            columns:
+              - column:
+                  name: user_id

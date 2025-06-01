@@ -1,5 +1,6 @@
 package az.portfolioapi.dto.auth.response;
 
+import az.portfolioapi.entity.enums.UserRole;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,14 +14,9 @@ import lombok.experimental.FieldDefaults;
 public class RegisterResponse {
 
     Long id;
-    String fullName;
     String username;
+    String firstName;
+    String lastName;
     String email;
+    UserRole role;
 }
-
-//    private LocalDateTime registrationDate;
-
-/*
-    String firstname
-    String lastname
- */

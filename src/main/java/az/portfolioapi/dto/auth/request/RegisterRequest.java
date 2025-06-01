@@ -2,10 +2,7 @@ package az.portfolioapi.dto.auth.request;
 
 import az.portfolioapi.entity.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -15,35 +12,36 @@ import org.hibernate.validator.constraints.Length;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RegisterRequest {
 
-    static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).+$";
+    static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{4,20}$";
 
-    @NotBlank(message = "Full name cannot be blank")
-    @Size(min = 5, max = 50, message = "Full name must be 5-50 characters")
-    String fullName;
+    @NotBlank(message = "{validation.register.firstname.notblank}")
+    @Size(max = 100, message = "{validation.register.firstname.size}")
+    String firstName;
 
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 5, max = 20, message = "Username must be 5-20 characters")
+    @NotBlank(message = "{validation.register.lastname.notblank}")
+    @Size(max = 100, message = "{validation.register.lastname.size}")
+    String lastName;
+
+    @NotBlank(message = "{validation.register.username.notblank}")
+    @Size(min = 5, max = 50, message = "{validation.register.username.size}")
     String username;
 
-    @NotBlank(message = "Email cannot be blank")
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "{validation.register.email.notblank}")
+    @Email(message = "{validation.register.email.email}")
+    @Size(max = 254, message = "{validation.register.email.size}")
     String email;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 4, max = 20, message = "Password must be 4-20 characters")
-    @Pattern(regexp = PASSWORD_REGEX, message = "Password must contain at least 1 uppercase letter (A-Z), 1 lowercase letter (a-z), and 1 digit (0-9)")
+    @NotBlank(message = "{validation.register.password.notblank}")
+    @Size(min = 4, max = 20, message = "{validation.register.password.size}")
+    @Pattern(regexp = PASSWORD_REGEX, message = "{validation.register.password.pattern}")
     String password;
 
     @JsonIgnore  //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @NotNull(message = "{validation.register.role.notnull}")
     UserRole role = UserRole.MEMBER;
 }
-
-/*
-    String firstname
-    String lastname
- */
 
 
 /*
     private static final String EMAIL_REGEX = "^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
- */
+*/

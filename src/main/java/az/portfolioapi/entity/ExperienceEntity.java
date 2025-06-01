@@ -39,6 +39,7 @@ public class ExperienceEntity /*extends BaseAuditableEntity*/ {
     @Column(length = 2000)
     private String description;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private PortfolioEntity portfolio;

@@ -2,6 +2,7 @@ package az.portfolioapi.service.auth;
 
 import az.portfolioapi.entity.RefreshTokenEntity;
 import az.portfolioapi.entity.UserEntity;
+import az.portfolioapi.exception.user.UserNotFoundException;
 import az.portfolioapi.repository.RefreshTokenRepository;
 import az.portfolioapi.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -48,7 +49,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     /**************************************************************************************************************/
     public String generateRefreshToken(UserDetails userDetails) {
         UserEntity user = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
         String token = buildToken(userDetails, refreshTokenExpiration);
 
@@ -72,6 +73,7 @@ public class JwtTokenServiceImpl implements JwtTokenService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
 
     private String buildToken(UserDetails userDetails, long expiration) {
         return Jwts.builder()

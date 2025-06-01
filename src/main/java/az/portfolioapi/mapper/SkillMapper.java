@@ -20,5 +20,5 @@ public interface SkillMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolio", ignore = true)
-    void update(SkillRequest request, @MappingTarget SkillEntity skill);
+    void updateEntity(SkillRequest request, @MappingTarget SkillEntity skill);
 }

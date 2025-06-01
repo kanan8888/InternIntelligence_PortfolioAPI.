@@ -32,6 +32,7 @@ public class SkillEntity /*extends BaseAuditableEntity*/ {
     @Column(nullable = false)
     private SkillLevel skillLevel;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private PortfolioEntity portfolio;

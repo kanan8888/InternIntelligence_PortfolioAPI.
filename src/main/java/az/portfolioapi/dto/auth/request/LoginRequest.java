@@ -10,12 +10,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-    @NotBlank(message = "Username cannot be blank")
-    @Size(min = 5, max = 50, message = "Username must be 5-20 characters")
+    @NotBlank(message = "{validation.login.username.notblank}")
+    @Size(max = 50, message = "{validation.login.username.size}")
     String username;
 
-    @NotBlank(message = "Password cannot be blank")
-    @Size(min = 4, max = 20, message = "Password must be 4-20 characters")
+    @NotBlank(message = "{validation.login.password.notblank}")
+    @Size(max = 20, message = "{validation.login.password.size}")
     String password;
 }
 

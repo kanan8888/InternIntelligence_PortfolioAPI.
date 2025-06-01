@@ -15,9 +15,9 @@ import java.util.List;
 public class PortfolioResponse {
 
     Long id;
+    Long userId;
     String title;
     String description;
-    Long userId;
     List<EducationResponse> educations;
     List<ExperienceResponse> experiences;
     List<ProjectResponse> projects;

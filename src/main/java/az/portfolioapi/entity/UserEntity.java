@@ -13,10 +13,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name = "users", indexes = {
-        @Index(name = "idx_users_username", columnList = "username", unique = true),
-        @Index(name = "idx_users_email", columnList = "email", unique = true)
-})
+@Table(name = "users")
 @Getter
 @Setter
 @ToString(callSuper = true, exclude = {"password","portfolios"}) /**/
@@ -31,7 +28,10 @@ public class UserEntity /*extends BaseAuditableEntity*/ {
     @LastModifiedDate                                         private Instant updatedAt;
 
     @Column(nullable = false, length = 100)
-    String fullName;
+    String firstName;
+
+    @Column(nullable = false, length = 100)
+    String lastName;
 
     @Column(nullable = false, unique = true, length = 50)
     private String username;
@@ -60,8 +60,7 @@ public class UserEntity /*extends BaseAuditableEntity*/ {
         }
 */
 
-
 /*
-        @CreatedBy
-        @LastModifiedBy
+     @CreatedBy
+     @LastModifiedBy
 */

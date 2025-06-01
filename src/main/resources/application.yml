@@ -1,12 +1,12 @@
 server:
   port: 5555
 
-app:
-  jwt:
-    secret: ${JWT_SECRET:your-256-bit-secret-base64-encoded}
-    access-token-expiration: 86400000 # 24 saat
-    refresh-token-expiration: 604800000 # 7 gün
-    issuer: your-app-name
+#app:
+#  jwt:
+#    secret: ${JWT_SECRET:your-256-bit-secret-base64-encoded}
+#    access-token-expiration: 86400000 # 24 saat
+#    refresh-token-expiration: 604800000 # 7 gün
+#    issuer: PortfoliAPI
 
 
 spring:
@@ -22,5 +22,13 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-#  liquibase:
-#    change-log: db/changelog/db.changelog-master.yaml
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yaml
+  data:
+    web:
+      pageable:
+        default-page-size: 5
+        max-page-size: 20
+  messages:
+    basename: messages
+    encoding: UTF-8

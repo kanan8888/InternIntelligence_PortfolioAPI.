@@ -36,4 +36,9 @@ public class CookieUtil {
         cookie.setMaxAge(0);
         response.addCookie(cookie);
     }
+
+    public static void updateRefreshToken(HttpServletResponse response, String token) {
+        CookieUtil.deleteRefreshToken(response);
+        CookieUtil.addRefreshToken(response, token);
+    }
 }

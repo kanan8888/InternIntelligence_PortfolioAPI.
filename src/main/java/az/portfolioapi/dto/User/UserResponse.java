@@ -12,8 +12,9 @@ import java.util.List;
 public class UserResponse {
 
     Long id;
-    String fullName;
     String username;
+    String firstName;
+    String lastName;
     String email;
     UserRole role;
     List<Long> portfolioIds;

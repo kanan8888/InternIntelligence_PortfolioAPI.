@@ -1,19 +1,20 @@
 package az.portfolioapi.service.skill;
 
+import az.portfolioapi.entity.enums.UserRole;
+import az.portfolioapi.exception.AccessDeniedException;
+import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
+import az.portfolioapi.exception.skill.SkillNotFoundException;
 import az.portfolioapi.mapper.SkillMapper;
 import az.portfolioapi.dto.Skill.SkillRequest;
 import az.portfolioapi.dto.Skill.SkillResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.SkillEntity;
-import az.portfolioapi.exception.PortfolioNotFoundException;
-import az.portfolioapi.exception.SkillNotFoundException;
 import az.portfolioapi.repository.PortfolioRepository;
 import az.portfolioapi.repository.SkillRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,48 +25,68 @@ public class SkillServiceImpl implements SkillService {
     private final SkillMapper skillMapper;
 
     @Override
-    public SkillResponse createSkill(SkillRequest skillRequest) {
-        PortfolioEntity portfolio = portfolioRepository.findById(skillRequest.getPortfolioId())
-                .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found with id: " + skillRequest.getPortfolioId()));
-        SkillEntity skill = skillMapper.toEntity(skillRequest, portfolio);
-        return skillMapper.toResponse(skillRepository.save(skill));
+    public SkillResponse createSkill(Long userId, SkillRequest request) {
+        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(request.getPortfolioId(), userId)
+                .orElseThrow(PortfolioNotFoundException::new);
+        SkillEntity skill = skillMapper.toEntity(request, portfolio);
+        return skillMapper.toResponse(
+                skillRepository.save(skill)
+        );
     }
 
     @Override
-    public SkillResponse updateSkill(Long id, SkillRequest skillRequest) {
-        SkillEntity skill = skillRepository.findById(id)
-                .orElseThrow(()-> new SkillNotFoundException("Skill not found with id " + id));
-        skillMapper.update(skillRequest, skill);
-        return skillMapper.toResponse(skillRepository.save(skill));
+    public SkillResponse updateSkill(Long skillId, Long userId, SkillRequest request) {
+        SkillEntity skill = skillRepository.findByIdAndPortfolio_User_Id(skillId, userId)
+                .orElseThrow(SkillNotFoundException::new);
+        skillMapper.updateEntity(request, skill);
+        return skillMapper.toResponse(
+                skillRepository.save(skill)
+        );
     }
 
     @Override
-    public SkillResponse getSkillById(Long id) {
-        return skillRepository.findById(id)
-                .map(skillMapper::toResponse)
-                .orElseThrow(()-> new SkillNotFoundException("skill not found with id " + id));
+    public SkillResponse getSkillById(Long skillId, Long userId, UserRole role) {
+        SkillEntity skill = getSkillByRole(skillId, userId, role);
+        return skillMapper.toResponse(skill);
     }
 
     @Override
-    public List<SkillResponse> getSkillsByPortfolioId(Long portfolioId) {
-        PortfolioEntity portfolio = portfolioRepository.findById(portfolioId)
-                .orElseThrow(() -> new PortfolioNotFoundException("Portfolio not found with id " + portfolioId));
-        return portfolio.getSkills().stream()
-                .map(skillMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<SkillResponse> getSkillsByPortfolioId(Long portfolioId, Long userId, UserRole role, Pageable pageable) {
+        Page<SkillResponse> skills = role == UserRole.ADMIN
+                ? skillRepository.findByPortfolio_Id(portfolioId, pageable)
+                        .map(skillMapper::toResponse)
+                : skillRepository.findByPortfolio_IdAndPortfolio_User_Id(portfolioId, userId, pageable)
+                        .map(skillMapper::toResponse);
+        if(skills.isEmpty()){
+            throw new SkillNotFoundException();
+        }
+        return skills;
     }
 
     @Override
-    public List<SkillResponse> getAllSkills() {
-        return skillRepository.findAll().stream()
-                .map(skillMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<SkillResponse> getSkillsByUserId(Long userId, Pageable pageable) {
+        return skillRepository.findByPortfolio_User_Id(userId, pageable)
+                .map(skillMapper::toResponse);
     }
 
     @Override
-    public void deleteSkill(Long id) {
-        SkillEntity skillEntity = skillRepository.findById(id)
-                .orElseThrow(()-> new SkillNotFoundException("skill not found with id " + id));
-        skillRepository.delete(skillEntity);
+    public Page<SkillResponse> getAllSkills(Pageable pageable) {
+        return skillRepository.findAll(pageable)
+                .map(skillMapper::toResponse);
+    }
+
+    @Override
+    public void deleteSkill(Long skillId, Long userId, UserRole role) {
+        SkillEntity skill = getSkillByRole(skillId, userId, role);
+        skillRepository.delete(skill);
+    }
+
+
+    private SkillEntity getSkillByRole(Long skillId, Long userId, UserRole role) {
+        return role == UserRole.ADMIN
+                ? skillRepository.findById(skillId)
+                        .orElseThrow(() -> new SkillNotFoundException(skillId))
+                : skillRepository.findByIdAndPortfolio_User_Id(skillId, userId)
+                        .orElseThrow(() -> new AccessDeniedException("You do not have Skill with id: " + skillId));   /*AccessDeniedException*/
     }
 }

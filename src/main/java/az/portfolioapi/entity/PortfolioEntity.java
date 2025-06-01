@@ -31,6 +31,7 @@ public class PortfolioEntity /*extends BaseAuditableEntity*/ {
     @Column(length = 2000)
     private String description;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;

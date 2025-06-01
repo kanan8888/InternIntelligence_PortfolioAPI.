@@ -41,6 +41,7 @@ public class EducationEntity /*extends BaseAuditableEntity*/ {
 
     private LocalDate endDate;
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "portfolio_id", nullable = false)
     private PortfolioEntity portfolio;

@@ -1,37 +1,49 @@
-#databaseChangeLog:
-#  - changeSet:
-#      id: 20250515-02
-#      author: kanan8888
-#      preConditions:
-#        - sqlCheck:
-#            expectedResult: 0
-#            sql: SELECT COUNT(*) FROM users WHERE username = 'admin'
-#      changes:
-#        - insert:
-#            tableName: users
-#            columns:
-#              - column:
-#                  name: created_at
-#                  valueComputed: CURRENT_TIMESTAMP
-#              - column:
-#                  name: updated_at
-#                  valueComputed: CURRENT_TIMESTAMP
-#              - column:
-#                  name: full_name
-#                  value: "Admin Adminov"
-#              - column:
-#                  name: username
-#                  value: "admin"
-#              - column:
-#                  name: email
-#                  value: "admin@example.com"
-#              - column:
-#                  name: password
-#                  value: "$2a$10$OnMc11v4y0a7vCsj0gwaOeuinf7Uxj9mnmlUOcu7fcOPL0qLyQlHe" #Admin123
-#              - column:
-#                  name: role
-#                  value: "ADMIN"
-#      rollback:
-#        - delete:
-#            tableName: users
-#            where: "username = 'admin'"
+databaseChangeLog:
+  - changeSet:
+      id: 20250515-02
+      author: kanan8888
+      preConditions:
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT COUNT(*) FROM users WHERE username = 'admin'
+      changes:
+
+        - insert:
+            tableName: users
+            columns:
+
+              - column:
+                  name: first_name
+                  value: "Admin"
+
+              - column:
+                  name: last_name
+                  value: "Adminov"
+
+              - column:
+                  name: username
+                  value: "admin"
+
+              - column:
+                  name: email
+                  value: "admin@example.com"
+
+              - column:
+                  name: password
+                  value: "$2a$10$OnMc11v4y0a7vCsj0gwaOeuinf7Uxj9mnmlUOcu7fcOPL0qLyQlHe" #Admin123
+
+              - column:
+                  name: role
+                  value: "ADMIN"
+
+              - column:
+                  name: created_at
+                  valueComputed: CURRENT_TIMESTAMP
+
+              - column:
+                  name: updated_at
+                  valueComputed: CURRENT_TIMESTAMP
+      rollback:
+        - delete:
+            tableName: users
+            where: "username = 'admin'"

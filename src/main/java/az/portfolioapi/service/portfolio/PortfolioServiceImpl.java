@@ -1,18 +1,20 @@
 package az.portfolioapi.service.portfolio;
 
+import az.portfolioapi.entity.enums.UserRole;
+import az.portfolioapi.exception.AccessDeniedException;
+import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
+import az.portfolioapi.exception.user.UserNotFoundException;
 import az.portfolioapi.mapper.PortfolioMapper;
 import az.portfolioapi.dto.Portfolio.PortfolioRequest;
 import az.portfolioapi.dto.Portfolio.PortfolioResponse;
 import az.portfolioapi.entity.PortfolioEntity;
 import az.portfolioapi.entity.UserEntity;
-import az.portfolioapi.exception.PortfolioNotFoundException;
 import az.portfolioapi.repository.PortfolioRepository;
 import az.portfolioapi.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,49 +25,55 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final PortfolioMapper portfolioMapper;
 
     @Override
-    public PortfolioResponse createPortfolio(PortfolioRequest request) {
-        UserEntity user = userRepository.findById(request.getUserId())
-                .orElseThrow(()-> new RuntimeException("UserNotFound : " + request.getUserId()));
-        PortfolioEntity portfolio = portfolioMapper.toEntity(request,user);
-        return portfolioMapper.toResponse(portfolioRepository.save(portfolio));
+    public PortfolioResponse createPortfolio(Long userId, PortfolioRequest request) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(()-> new UserNotFoundException(userId));   /* bu error hec zaman atilmayacaq  */
+        PortfolioEntity portfolio = portfolioMapper.toEntity(request, user);
+        return portfolioMapper.toResponse(
+                portfolioRepository.save(portfolio)
+        );
     }
 
     @Override
-    public PortfolioResponse updatePortfolio(Long id, PortfolioRequest request) {
-        PortfolioEntity portfolio = portfolioRepository.findById(id)
-                .orElseThrow(()-> new PortfolioNotFoundException("Portfolio not found with id: " + id));
+    public PortfolioResponse updatePortfolio(Long portfolioId, Long userId, PortfolioRequest request) {
+        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
+                .orElseThrow(PortfolioNotFoundException::new);
         portfolioMapper.updateEntity(request, portfolio);
-        portfolio = portfolioRepository.save(portfolio);
+        return portfolioMapper.toResponse(
+                portfolioRepository.save(portfolio)
+        );
+    }
+
+    @Override
+    public PortfolioResponse getPortfolioById(Long portfolioId, Long userId, UserRole role) {
+        PortfolioEntity portfolio = getPortfolioByRole(portfolioId, userId, role);
         return portfolioMapper.toResponse(portfolio);
     }
 
     @Override
-    public PortfolioResponse getPortfolioById(Long id) {
-        return portfolioRepository.findById(id)
-                .map(portfolioMapper::toResponse)
-                .orElseThrow(()-> new PortfolioNotFoundException("Portfolio not found with id: " + id));
+    public Page<PortfolioResponse> getPortfoliosByUserId(Long userId, Pageable pageable) {
+        return portfolioRepository.findByUser_Id(userId, pageable)
+                .map(portfolioMapper::toResponse);
     }
 
     @Override
-    public List<PortfolioResponse> getPortfoliosByUserId(Long userId) {
-        UserEntity user = userRepository.findById(userId)
-                .orElseThrow(()-> new RuntimeException("user not found"));
-        return user.getPortfolios().stream()
-                .map(portfolioMapper::toResponse)
-                .collect(Collectors.toList());
+    public Page<PortfolioResponse> getAllPortfolios(Pageable pageable) {
+        return portfolioRepository.findAll(pageable)
+                .map(portfolioMapper::toResponse);
     }
 
     @Override
-    public List<PortfolioResponse> getAllPortfolios() {
-        return portfolioRepository.findAll().stream()
-                .map(portfolioMapper::toResponse)
-                .collect(Collectors.toList());
+    public void deletePortfolio(Long portfolioId, Long userId, UserRole role) {
+        PortfolioEntity portfolio = getPortfolioByRole(portfolioId, userId, role);
+        portfolioRepository.delete(portfolio);
     }
 
-    @Override
-    public void deletePortfolio(Long id) {
-        PortfolioEntity portfolioEntity = portfolioRepository.findById(id)
-                .orElseThrow(()-> new PortfolioNotFoundException("Portfolio not found with id: " + id));
-        portfolioRepository.delete(portfolioEntity);
+
+    private PortfolioEntity getPortfolioByRole(Long portfolioId, Long userId, UserRole role) {
+        return role == UserRole.ADMIN
+                ? portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new PortfolioNotFoundException(portfolioId))
+                : portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
+                .orElseThrow(() -> new AccessDeniedException("You do not have portfolio with id: " + portfolioId));
     }
 }
