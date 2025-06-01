@@ -1,7 +1,6 @@
 package az.portfolioapi.service.skill;
 
 import az.portfolioapi.entity.enums.UserRole;
-import az.portfolioapi.exception.AccessDeniedException;
 import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
 import az.portfolioapi.exception.skill.SkillNotFoundException;
 import az.portfolioapi.mapper.SkillMapper;
@@ -26,8 +25,9 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public SkillResponse createSkill(Long userId, SkillRequest request) {
-        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(request.getPortfolioId(), userId)
-                .orElseThrow(PortfolioNotFoundException::new);
+        Long portfolioId = request.getPortfolioId();
+        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
+                .orElseThrow(()-> new PortfolioNotFoundException(portfolioId, userId));
         SkillEntity skill = skillMapper.toEntity(request, portfolio);
         return skillMapper.toResponse(
                 skillRepository.save(skill)
@@ -37,7 +37,7 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public SkillResponse updateSkill(Long skillId, Long userId, SkillRequest request) {
         SkillEntity skill = skillRepository.findByIdAndPortfolio_User_Id(skillId, userId)
-                .orElseThrow(SkillNotFoundException::new);
+                .orElseThrow(()-> new SkillNotFoundException(skillId, userId));
         skillMapper.updateEntity(request, skill);
         return skillMapper.toResponse(
                 skillRepository.save(skill)
@@ -52,15 +52,11 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Page<SkillResponse> getSkillsByPortfolioId(Long portfolioId, Long userId, UserRole role, Pageable pageable) {
-        Page<SkillResponse> skills = role == UserRole.ADMIN
+        return role == UserRole.ADMIN
                 ? skillRepository.findByPortfolio_Id(portfolioId, pageable)
                         .map(skillMapper::toResponse)
                 : skillRepository.findByPortfolio_IdAndPortfolio_User_Id(portfolioId, userId, pageable)
                         .map(skillMapper::toResponse);
-        if(skills.isEmpty()){
-            throw new SkillNotFoundException();
-        }
-        return skills;
     }
 
     @Override
@@ -87,6 +83,6 @@ public class SkillServiceImpl implements SkillService {
                 ? skillRepository.findById(skillId)
                         .orElseThrow(() -> new SkillNotFoundException(skillId))
                 : skillRepository.findByIdAndPortfolio_User_Id(skillId, userId)
-                        .orElseThrow(() -> new AccessDeniedException("You do not have Skill with id: " + skillId));   /*AccessDeniedException*/
+                        .orElseThrow(() -> new SkillNotFoundException(skillId, userId));
     }
 }

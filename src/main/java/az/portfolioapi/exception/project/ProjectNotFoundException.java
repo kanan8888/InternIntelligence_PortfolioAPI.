@@ -5,11 +5,19 @@ import org.springframework.http.HttpStatus;
 
 public class ProjectNotFoundException extends BaseException {
 
-    public ProjectNotFoundException() {
-        super("Project not found", HttpStatus.NOT_FOUND);
+    public ProjectNotFoundException(Long projectId) {
+        super(
+                "error.project.not.found",
+                String.format("Project not found with id: %d", projectId),
+                HttpStatus.NOT_FOUND
+        );
     }
 
-    public ProjectNotFoundException(Long projectId) {
-        super("Project not found with id: " + projectId, HttpStatus.NOT_FOUND);
+    public ProjectNotFoundException(Long projectId, Long userId) {
+        super(
+                "error.project.not.found",
+                String.format("Project not found with id: %d for user with id: %d", projectId, userId),
+                HttpStatus.NOT_FOUND
+        );
     }
 }

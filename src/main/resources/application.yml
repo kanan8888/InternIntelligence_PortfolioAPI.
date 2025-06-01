@@ -29,6 +29,8 @@ spring:
       pageable:
         default-page-size: 5
         max-page-size: 20
+      locale: en
+      locale-resolver: accept-header
   messages:
     basename: messages
     encoding: UTF-8

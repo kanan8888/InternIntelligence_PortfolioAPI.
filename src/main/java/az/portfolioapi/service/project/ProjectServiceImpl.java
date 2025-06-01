@@ -1,7 +1,6 @@
 package az.portfolioapi.service.project;
 
 import az.portfolioapi.entity.enums.UserRole;
-import az.portfolioapi.exception.AccessDeniedException;
 import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
 import az.portfolioapi.exception.project.ProjectNotFoundException;
 import az.portfolioapi.mapper.ProjectMapper;
@@ -26,8 +25,9 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public ProjectResponse createProject(Long userId, ProjectRequest request) {
-        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(request.getPortfolioId(), userId)
-                .orElseThrow(PortfolioNotFoundException::new);
+        Long portfolioId = request.getPortfolioId();
+        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
+                .orElseThrow(()-> new PortfolioNotFoundException(portfolioId, userId));
         ProjectEntity project = projectMapper.toEntity(request, portfolio);
         return projectMapper.toResponse(
                 projectRepository.save(project)
@@ -37,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponse updateProject(Long projectId, Long userId, ProjectRequest request) {
         ProjectEntity project = projectRepository.findByIdAndPortfolio_User_Id(projectId, userId)
-                .orElseThrow(ProjectNotFoundException::new);
+                .orElseThrow(()-> new ProjectNotFoundException(projectId, userId));
         projectMapper.updateEntity(request, project);
         return projectMapper.toResponse(
                 projectRepository.save(project)
@@ -52,15 +52,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Page<ProjectResponse> getProjectsByPortfolioId(Long portfolioId, Long userId, UserRole role, Pageable pageable) {
-        Page<ProjectResponse> projects = role == UserRole.ADMIN
+        return role == UserRole.ADMIN
                 ? projectRepository.findByPortfolio_Id(portfolioId, pageable)
                         .map(projectMapper::toResponse)
                 : projectRepository.findByPortfolio_IdAndPortfolio_User_Id(portfolioId, userId, pageable)
                         .map(projectMapper::toResponse);
-        if(projects.isEmpty()){
-            throw new ProjectNotFoundException();
-        }
-        return projects;
     }
 
     @Override
@@ -87,6 +83,6 @@ public class ProjectServiceImpl implements ProjectService {
                 ? projectRepository.findById(projectId)
                         .orElseThrow(() -> new ProjectNotFoundException(projectId))
                 : projectRepository.findByIdAndPortfolio_User_Id(projectId, userId)
-                        .orElseThrow(() -> new AccessDeniedException("You do not have Project with id: " + projectId));
+                        .orElseThrow(() -> new ProjectNotFoundException(projectId, userId));
     }
 }

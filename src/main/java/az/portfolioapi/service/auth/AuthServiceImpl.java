@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
         );
     }
 
-    @Override
+    @Override/**/
     public TokenResponse login(LoginRequest request) {
 //            Authentication auth= authenticationManager.authenticate(
 //                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
@@ -58,16 +58,16 @@ public class AuthServiceImpl implements AuthService {
                 .accessToken(jwtAccessToken)
                 .refreshToken(jwtRefreshToken)
                 .build();
-    }
+    }    /**/
 
     @Override
     public TokenResponse refresh(String oldRefreshToken) {
         RefreshTokenEntity refreshToken = refreshTokenRepository.findByToken(oldRefreshToken)
-                .orElseThrow(RefreshTokenNotFoundException::new);
+                .orElseThrow(()-> new RefreshTokenNotFoundException(oldRefreshToken));
 
         if (refreshToken.isExpired()) {
             refreshTokenRepository.delete(refreshToken);
-            throw new RefreshTokenExpiredException();
+            throw new RefreshTokenExpiredException(oldRefreshToken);
         }
 
         UserEntity user = refreshToken.getUser();

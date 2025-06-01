@@ -31,6 +31,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "portfolios", ignore = true)
+    @Mapping(target = "role", ignore = true)
     void updateEntity(UserRequest request, @MappingTarget UserEntity user);
 
     @Named("mapPortfoliosToPortfolioIds")

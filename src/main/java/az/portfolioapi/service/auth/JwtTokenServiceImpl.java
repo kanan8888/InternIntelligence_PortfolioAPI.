@@ -48,8 +48,9 @@ public class JwtTokenServiceImpl implements JwtTokenService {
 
     /**************************************************************************************************************/
     public String generateRefreshToken(UserDetails userDetails) {
-        UserEntity user = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(UserNotFoundException::new);
+        String username = userDetails.getUsername();
+        UserEntity user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new UserNotFoundException(username));
 
         String token = buildToken(userDetails, refreshTokenExpiration);
 

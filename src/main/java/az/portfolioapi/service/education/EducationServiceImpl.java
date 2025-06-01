@@ -1,7 +1,6 @@
 package az.portfolioapi.service.education;
 
 import az.portfolioapi.entity.enums.UserRole;
-import az.portfolioapi.exception.AccessDeniedException;
 import az.portfolioapi.exception.education.EducationNotFoundException;
 import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
 import az.portfolioapi.mapper.EducationMapper;
@@ -26,8 +25,9 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public EducationResponse createEducation(Long userId, EducationRequest request) {
-        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(request.getPortfolioId(), userId)
-                .orElseThrow(PortfolioNotFoundException::new);
+        Long portfolioId = request.getPortfolioId();
+        PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
+                .orElseThrow(()-> new PortfolioNotFoundException(portfolioId, userId));
         EducationEntity education = educationMapper.toEntity(request, portfolio);
         return educationMapper.toResponse(
                 educationRepository.save(education)
@@ -37,7 +37,7 @@ public class EducationServiceImpl implements EducationService {
     @Override
     public EducationResponse updateEducation(Long educationId, Long userId, EducationRequest request) {
         EducationEntity education = educationRepository.findByIdAndPortfolio_User_Id(educationId, userId)
-                .orElseThrow(EducationNotFoundException::new);
+                .orElseThrow(()-> new EducationNotFoundException(educationId));
         educationMapper.updateEntity(request, education);
         return educationMapper.toResponse(
                 educationRepository.save(education)
@@ -52,15 +52,11 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public Page<EducationResponse> getEducationsByPortfolioId(Long portfolioId, Long userId, UserRole role, Pageable pageable) {
-        Page<EducationResponse> educations = role == UserRole.ADMIN
+        return role == UserRole.ADMIN
                 ? educationRepository.findByPortfolio_Id(portfolioId, pageable)
                         .map(educationMapper::toResponse)
                 : educationRepository.findByPortfolio_IdAndPortfolio_User_Id(portfolioId, userId, pageable)
                         .map(educationMapper::toResponse);
-        if(educations.isEmpty()){
-            throw new EducationNotFoundException();
-        }
-        return educations;
     }
 
     @Override
@@ -87,6 +83,6 @@ public class EducationServiceImpl implements EducationService {
                 ? educationRepository.findById(educationId)
                         .orElseThrow(() -> new EducationNotFoundException(educationId))
                 : educationRepository.findByIdAndPortfolio_User_Id(educationId, userId)
-                        .orElseThrow(() -> new AccessDeniedException("You do not have education with id: " + educationId));
+                        .orElseThrow(() -> new EducationNotFoundException(educationId, userId));
     }
 }

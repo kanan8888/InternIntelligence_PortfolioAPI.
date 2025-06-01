@@ -1,7 +1,6 @@
 package az.portfolioapi.service.portfolio;
 
 import az.portfolioapi.entity.enums.UserRole;
-import az.portfolioapi.exception.AccessDeniedException;
 import az.portfolioapi.exception.portfolio.PortfolioNotFoundException;
 import az.portfolioapi.exception.user.UserNotFoundException;
 import az.portfolioapi.mapper.PortfolioMapper;
@@ -24,7 +23,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final UserRepository userRepository;
     private final PortfolioMapper portfolioMapper;
 
-    @Override
+    @Override/**/
     public PortfolioResponse createPortfolio(Long userId, PortfolioRequest request) {
         UserEntity user = userRepository.findById(userId)
                 .orElseThrow(()-> new UserNotFoundException(userId));   /* bu error hec zaman atilmayacaq  */
@@ -32,12 +31,12 @@ public class PortfolioServiceImpl implements PortfolioService {
         return portfolioMapper.toResponse(
                 portfolioRepository.save(portfolio)
         );
-    }
+    }      /**/
 
     @Override
     public PortfolioResponse updatePortfolio(Long portfolioId, Long userId, PortfolioRequest request) {
         PortfolioEntity portfolio = portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
-                .orElseThrow(PortfolioNotFoundException::new);
+                .orElseThrow(()-> new PortfolioNotFoundException(portfolioId, userId));
         portfolioMapper.updateEntity(request, portfolio);
         return portfolioMapper.toResponse(
                 portfolioRepository.save(portfolio)
@@ -74,6 +73,6 @@ public class PortfolioServiceImpl implements PortfolioService {
                 ? portfolioRepository.findById(portfolioId)
                 .orElseThrow(() -> new PortfolioNotFoundException(portfolioId))
                 : portfolioRepository.findByIdAndUser_Id(portfolioId, userId)
-                .orElseThrow(() -> new AccessDeniedException("You do not have portfolio with id: " + portfolioId));
+                .orElseThrow(() -> new PortfolioNotFoundException(portfolioId, userId));
     }
 }

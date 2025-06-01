@@ -1,6 +1,7 @@
 package az.portfolioapi.controller;
 
 import az.portfolioapi.dto.User.ResetPasswordRequest;
+import az.portfolioapi.dto.User.UserFilterRequest;
 import az.portfolioapi.dto.User.UserRequest;
 import az.portfolioapi.dto.User.UserResponse;
 import az.portfolioapi.entity.enums.DegreeLevel;
@@ -83,19 +84,9 @@ public class UserController {
 
     @GetMapping("/users/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<UserResponse>> filterUsers(@RequestParam(required = false) String username,
-                                                          @RequestParam(required = false) String firstName,
-                                                          @RequestParam(required = false) String lastName,
-                                                          @RequestParam(required = false) String email,
-                                                          @RequestParam(required = false) UserRole role,
-                                                          @RequestParam(required = false) String educationInstitution,
-                                                          @RequestParam(required = false) DegreeLevel educationDegree,
-                                                          @RequestParam(required = false) String experienceCompany,
-                                                          @RequestParam(required = false) String experiencePosition,
-                                                          @RequestParam(required = false) String skillName,
-                                                          Pageable pageable) {
+    public ResponseEntity<Page<UserResponse>> filterUsers(UserFilterRequest request, Pageable pageable) {
         return ResponseEntity.ok(
-                userService.filterUsers(username, firstName, lastName, email, role, educationInstitution, educationDegree, experienceCompany, experiencePosition, skillName, pageable)
+                userService.filterUsers(request, pageable)
         );
     }
 
