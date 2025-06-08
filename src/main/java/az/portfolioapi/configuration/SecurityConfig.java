@@ -1,7 +1,8 @@
 package az.portfolioapi.configuration;
 
-import az.portfolioapi.security.jwt.JwtAuthFilter;
-import az.portfolioapi.security.jwt.JwtAuthenticationEntryPoint;
+import az.portfolioapi.security.CustomAccessDeniedHandler;
+import az.portfolioapi.security.JwtAuthFilter;
+import az.portfolioapi.security.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,16 +26,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
-    private final JwtAuthenticationEntryPoint jwtAuthEntryPoint;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
 //                ..cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .exceptionHandling(handling -> handling
-                        .authenticationEntryPoint(jwtAuthEntryPoint)
-                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -45,6 +44,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**"
                         ).permitAll()
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(handling -> handling
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 

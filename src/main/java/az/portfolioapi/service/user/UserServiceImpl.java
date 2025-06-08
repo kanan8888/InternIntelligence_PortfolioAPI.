@@ -106,9 +106,9 @@ public class UserServiceImpl implements UserService {
                         request.getFirstName(),
                         request.getLastName(),
                         request.getEmail(),
-                        request.getRole(),
+                        enumToString(request.getRole()),
                         request.getEducationInstitution(),
-                        request.getEducationDegree(),
+                        enumToString(request.getEducationDegree()),
                         request.getExperienceCompany(),
                         request.getExperiencePosition(),
                         request.getSkillName(),
@@ -140,6 +140,10 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
+    }
+
+    private String enumToString(Enum<?> e) {
+        return e == null ? null : e.name();
     }
 }
 

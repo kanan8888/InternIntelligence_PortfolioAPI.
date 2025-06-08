@@ -1,6 +1,5 @@
-package az.portfolioapi.security.jwt;
+package az.portfolioapi.security;
 
-import az.portfolioapi.security.CustomUserDetailsServiceImpl;
 import az.portfolioapi.service.auth.JwtTokenServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

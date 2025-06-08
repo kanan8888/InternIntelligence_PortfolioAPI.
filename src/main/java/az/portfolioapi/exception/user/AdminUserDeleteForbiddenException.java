@@ -1,6 +1,6 @@
 package az.portfolioapi.exception.user;
 
-import az.portfolioapi.exception.BaseException;
+import az.portfolioapi.exception.common.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class AdminUserDeleteForbiddenException extends BaseException {

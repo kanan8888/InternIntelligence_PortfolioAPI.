@@ -13,14 +13,14 @@ public class ResetPasswordRequest {
 
     static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{4,20}$";
 
-    @NotBlank(message = "{validation.resetpassword.currentpassword.notblank}")
+    @NotBlank(message = "{validation.reset.password.current.password.not.blank}")
     String currentPassword;
 
-    @NotBlank(message = "{validation.resetpassword.newpassword.notblank}")
-    @Size(min = 4, max = 20, message = "{validation.resetpassword.newpassword.size}")
-    @Pattern(regexp = PASSWORD_REGEX, message = "{validation.resetpassword.newpassword.pattern}")
+    @NotBlank(message = "{validation.reset.password.new.password.not.blank}")
+    @Size(min = 4, max = 20, message = "{validation.reset.password.new.password.size}")
+    @Pattern(regexp = PASSWORD_REGEX, message = "{validation.reset.password.new.password.pattern}")
     String newPassword;
 
-    @NotBlank(message = "{validation.resetpassword.confirmpassword.notblank}")
+    @NotBlank(message = "{validation.reset.password.confirm.password.not.blank}")
     String confirmPassword;
 }

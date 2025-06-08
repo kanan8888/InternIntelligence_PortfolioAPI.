@@ -15,23 +15,23 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EducationRequest {
 
-    @NotBlank(message = "{validation.education.institution.notblank}")
+    @NotBlank(message = "{validation.education.institution.not.blank}")
     @Size(max = 200, message = "{validation.education.institution.size}")
     String institution;
 
-    @NotNull(message = "{validation.education.degree.notnull}")
+    @NotNull(message = "{validation.education.degree.not.null}")
     DegreeLevel degree;
 
     @Size(max = 2000, message = "{validation.education.description.size}")
     String description;
 
-    @NotNull(message = "{validation.education.startDate.notnull}")
-    @PastOrPresent(message = "{validation.education.startDate.pastorpresent}")
+    @NotNull(message = "{validation.education.start.date.not.null}")
+    @PastOrPresent(message = "{validation.education.start.date.past.or.present}")
     LocalDate startDate;
 
     LocalDate endDate;
 
-    @NotNull(message = "{validation.education.portfolioId.notnull}")
+    @NotNull(message = "{validation.education.portfolio.id.not.null}")
     Long portfolioId;
 }
 

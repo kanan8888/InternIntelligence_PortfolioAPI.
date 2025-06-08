@@ -1,10 +1,10 @@
-package az.portfolioapi.util.cookie;
+package az.portfolioapi.util;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class CookieUtil {
+public final class RefreshTokenCookieUtil {
 
     private static final String REFRESH_TOKEN_NAME = "refresh_token";
     private static final int COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days
@@ -38,7 +38,7 @@ public class CookieUtil {
     }
 
     public static void updateRefreshToken(HttpServletResponse response, String token) {
-        CookieUtil.deleteRefreshToken(response);
-        CookieUtil.addRefreshToken(response, token);
+        RefreshTokenCookieUtil.deleteRefreshToken(response);
+        RefreshTokenCookieUtil.addRefreshToken(response, token);
     }
 }

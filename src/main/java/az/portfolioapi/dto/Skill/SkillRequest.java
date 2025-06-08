@@ -12,13 +12,13 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SkillRequest {
 
-    @NotBlank(message = "{validation.skill.name.notblank}")
+    @NotBlank(message = "{validation.skill.name.not.blank}")
     @Size(max = 100, message = "{validation.skill.name.size}")
     String name;
 
-    @NotNull(message = "{validation.skill.skillLevel.notnull}")
+    @NotNull(message = "{validation.skill.skill.level.not.null}")
     SkillLevel skillLevel;
 
-    @NotNull(message = "{validation.skill.portfolioId.notnull}")
+    @NotNull(message = "{validation.skill.portfolio.id.not.null}")
     Long portfolioId;
 }

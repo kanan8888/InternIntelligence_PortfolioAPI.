@@ -2,7 +2,7 @@ package az.portfolioapi.util;
 
 import java.security.SecureRandom;
 
-public class PasswordGenerator {
+public final class SecurePasswordGeneratorUtil {
     private static final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     private static final String DIGITS = "0123456789";

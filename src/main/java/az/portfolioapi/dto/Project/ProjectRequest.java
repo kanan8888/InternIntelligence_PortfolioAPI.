@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectRequest {
 
-    @NotBlank(message = "{validation.project.title.notblank}")
+    @NotBlank(message = "{validation.project.title.not.blank}")
     @Size(max = 200, message = "{validation.project.title.size}")
     String title;
 
@@ -21,6 +21,6 @@ public class ProjectRequest {
     @Size(max = 2000, message = "{validation.project.url.size}")
     String url;
 
-    @NotNull(message = "{validation.project.portfolioId.notnull}")
+    @NotNull(message = "{validation.project.portfolio.id.not.null}")
     Long portfolioId;
 }

@@ -1,8 +1,6 @@
 package az.portfolioapi.repository;
 
 import az.portfolioapi.entity.UserEntity;
-import az.portfolioapi.entity.enums.DegreeLevel;
-import az.portfolioapi.entity.enums.UserRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,10 +16,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     Boolean existsByEmail(String email);
     Boolean existsByUsername(String username);
-    Optional<UserEntity> findByEmail(String email);
+    //Optional<UserEntity> findByEmail(String email);
     Optional<UserEntity> findByUsername(String username);
     List<UserEntity> findAllByUsernameOrEmail(String username, String email);
-    Page<UserEntity> findByRole(UserRole role, Pageable pageable);
+    //Page<UserEntity> findByRole(UserRole role, Pageable pageable);
 
     @Query("""
     SELECT DISTINCT u FROM UserEntity u
@@ -44,9 +42,9 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
                                  @Param("firstName") String firstName,
                                  @Param("lastName") String lastName,
                                  @Param("email") String email,
-                                 @Param("role") UserRole role,
+                                 @Param("role") String role,
                                  @Param("educationInstitution") String educationInstitution,
-                                 @Param("educationDegree") DegreeLevel educationDegree,
+                                 @Param("educationDegree") String educationDegree,
                                  @Param("experienceCompany") String experienceCompany,
                                  @Param("experiencePosition") String experiencePosition,
                                  @Param("skillName") String skillName,

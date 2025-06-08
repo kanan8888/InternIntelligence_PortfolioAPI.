@@ -5,7 +5,7 @@ import az.portfolioapi.dto.auth.request.RegisterRequest;
 import az.portfolioapi.dto.auth.response.TokenResponse;
 import az.portfolioapi.dto.auth.response.RegisterResponse;
 import az.portfolioapi.service.auth.AuthService;
-import az.portfolioapi.util.cookie.CookieUtil;
+import az.portfolioapi.util.RefreshTokenCookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ public class AuthController {
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid LoginRequest request,
                                                       HttpServletResponse response) {
         TokenResponse tokenResponse = authService.login(request);
-        CookieUtil.addRefreshToken(response, tokenResponse.getRefreshToken());
+        RefreshTokenCookieUtil.addRefreshToken(response, tokenResponse.getRefreshToken());
         return ResponseEntity.ok(tokenResponse);
     }
 
@@ -42,15 +42,15 @@ public class AuthController {
     public ResponseEntity<TokenResponse> refresh(HttpServletRequest request,
                                                  HttpServletResponse response) {
         TokenResponse tokenResponse = authService.refresh(
-                CookieUtil.getRefreshToken(request)
+                RefreshTokenCookieUtil.getRefreshToken(request)
         );
-        CookieUtil.updateRefreshToken(response, tokenResponse.getRefreshToken());
+        RefreshTokenCookieUtil.updateRefreshToken(response, tokenResponse.getRefreshToken());
         return ResponseEntity.ok(tokenResponse);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletResponse response) {     //accesToken üçün blackList məntiqi də tətbiq etmək olar, bəlkə edərəm nəvaxtsa...
-        CookieUtil.deleteRefreshToken(response);
+        RefreshTokenCookieUtil.deleteRefreshToken(response);
         return ResponseEntity.ok().build();
     }
 }

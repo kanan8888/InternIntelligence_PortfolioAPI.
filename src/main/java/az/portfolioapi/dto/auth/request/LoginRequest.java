@@ -10,11 +10,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-    @NotBlank(message = "{validation.login.username.notblank}")
+    @NotBlank(message = "{validation.login.username.not.blank}")
     @Size(max = 50, message = "{validation.login.username.size}")
     String username;
 
-    @NotBlank(message = "{validation.login.password.notblank}")
+    @NotBlank(message = "{validation.login.password.not.blank}")
     @Size(max = 20, message = "{validation.login.password.size}")
     String password;
 }

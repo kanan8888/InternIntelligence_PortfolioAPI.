@@ -84,7 +84,7 @@ public class UserController {
 
     @GetMapping("/users/filter")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Page<UserResponse>> filterUsers(UserFilterRequest request, Pageable pageable) {
+    public ResponseEntity<Page<UserResponse>> filterUsers(@Valid @RequestBody UserFilterRequest request, Pageable pageable) {
         return ResponseEntity.ok(
                 userService.filterUsers(request, pageable)
         );

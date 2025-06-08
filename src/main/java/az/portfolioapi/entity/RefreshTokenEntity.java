@@ -18,7 +18,7 @@ public class RefreshTokenEntity /*extends BaseEntity*/ {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private Long id;
 
-    @Column(nullable = false, unique = true/*, length = 255*/) /**/
+    @Column(nullable = false, unique = true, length = 88)
     private String token;
 
     @Column(nullable = false)

@@ -1,13 +1,14 @@
 server:
   port: 5555
 
-#app:
-#  jwt:
-#    secret: ${JWT_SECRET:your-256-bit-secret-base64-encoded}
-#    access-token-expiration: 86400000 # 24 saat
-#    refresh-token-expiration: 604800000 # 7 gün
-#    issuer: PortfoliAPI
-
+app:
+  jwt:
+    secret-key: "RXlKbGJXRnBiQ0k2SW5SaGRHVXRjR3hsYmlJNklqSTBOakE0TkRBek5UVTRPU3dpYVdGMElqb3hOVEl6TXpFd016TTNOakFpTENKcFlYUWlPakV3TnpNek5qTTNNakU1Z3lJc0ltVjRjQ0k2TVRVMk16YzBNR0k1WlRReE1HTmtNbUl4TVRJMlpHVTFNVEF6T1RVNFlpSXNJbWx1ZEdWNGRDSTZJbXhwYm1WamRDOTJhV0YwSWl3aWFXRjBJam94TmpneE1ETXdNakl3TENKcFlYUWlPakV3TWpJM01EQXdPRGcwTENKcFlYUWlPakV3TXpBek56ZzNORE0xTENKcFlYUWlPakV3TURjeE1EQXdOamczZ2lKOS5BbU5hbEdZeTVHRUhvYURVUlVKRXlDaThVZldDb29zeEM="
+    access-token-expiration: 900000     #(86400000=1gün)(900000=15dəq)(60000=1dəq)
+    refresh-token-expiration: 604800000   # 7 gün
+    #issuer: "portfoliapi"
+    #audience: "portfoliapi-users"
+    #tokenPrefix: "Bearer "
 
 spring:
   datasource:

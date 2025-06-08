@@ -1,4 +1,4 @@
-package az.portfolioapi.dto;
+package az.portfolioapi.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,8 +9,9 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 public class ErrorResponse {
+
     private HttpStatus httpStatus;
     private String message;
-    private Instant timestamp;
+    private String timestamp;
     private String path;
 }

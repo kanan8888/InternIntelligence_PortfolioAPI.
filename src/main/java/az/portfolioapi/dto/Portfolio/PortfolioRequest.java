@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PortfolioRequest {
 
-    @NotBlank(message = "{validation.portfolio.title.notblank}")
+    @NotBlank(message = "{validation.portfolio.title.not.blank}")
     @Size(max = 200, message = "{validation.portfolio.title.size}")
     String title;
 

@@ -1,6 +1,6 @@
 package az.portfolioapi.exception.project;
 
-import az.portfolioapi.exception.BaseException;
+import az.portfolioapi.exception.common.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class ProjectNotFoundException extends BaseException {

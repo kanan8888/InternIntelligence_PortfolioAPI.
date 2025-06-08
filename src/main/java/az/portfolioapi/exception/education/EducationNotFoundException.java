@@ -1,6 +1,6 @@
 package az.portfolioapi.exception.education;
 
-import az.portfolioapi.exception.BaseException;
+import az.portfolioapi.exception.common.BaseException;
 import org.springframework.http.HttpStatus;
 
 public class EducationNotFoundException extends BaseException {
